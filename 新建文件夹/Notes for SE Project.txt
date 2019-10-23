@@ -1,0 +1,4 @@
+product backlog: product owener create; add pbi with priority, attribute, descrption, title, estimate, status);
+user: developer, manager; developer creates project to become product owenr, selects manager and developer(involved in only one project);
+sprint backlogs: pick pbi, made changes only by the developmet team;
+scenario: developer create project: select master, developer; email sent and accept; owener creat pbi(status, priority, estimate, title, desciption); developer take pbi into sprint; picks tasks and do them;
