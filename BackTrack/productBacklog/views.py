@@ -14,6 +14,17 @@ class ProductBacklogMain(TemplateView):
         context = super().get_context_data(**kwargs)
         context['project'] = Project.objects.get(pk=project)
         context['pbi_list'] = PBI.objects.filter(productBacklog__pk=productBacklog.pk).order_by('priority')
+        remaining_estimated = 0
+        finished_estimated = 0
+        for pbi in context['pbi_list']:
+            if pbi.status != "Finished":
+                remaining_estimated += pbi.estimated
+            else:
+                finished_estimated += pbi.estimated
+        total_estimated = remaining_estimated + finished_estimated
+        context['total_estimated'] = total_estimated
+        context['finished_estimated'] = finished_estimated
+        context['remaining_estimated'] = remaining_estimated
         return context
 
 
