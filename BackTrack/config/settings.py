@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'project.apps.ProjectConfig',
     'productBacklog.apps.ProductbacklogConfig',
     'django.contrib.admin',
     'django.contrib.auth',
