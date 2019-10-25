@@ -6,26 +6,24 @@
 </head>
 <body>
     <div>
-        <h1>PBI:</h1>
-        <h2>{{ pbi.name }}</h2>
+        <h1>Project: {{ project.name }}</h1>
+        <h2>PBI: {{ pbi.name }}</h2>
     </div>
 
     <div>
-        <p><b>PBI Description: </b>{{ pbi.description }}</p>
-        <p><b>PBI Status: </b>{{ pbi.status }}</p>
-        <p><b>PBI Estimated: </b>{{ pbi.estimated }}</p>
-        <p><b>PBI Priority: </b>{{ pbi.priority }}</p>
-        <p><b>PBI Sprint Number: </b>{{ pbi.sprintNumber }}</p>
+        <p><b>Description: </b>{{ pbi.description }}</p>
+        <p><b>Status: </b>{{ pbi.status }}</p>
+        <p><b>Estimated: </b>{{ pbi.estimated }}</p>
+        <p><b>Priority: </b>{{ pbi.priority }}</p>
+        <p><b>Sprint Number: </b>{{ pbi.sprintNumber }}</p>
     </div>
 
     <div>
-        <ul>
-            <li><a href="../pbi/add">Add PBI</a></li>
-            <li><a href="modify">Modify PBI</a></li>
-            <li><a href="delete">Delete PBI</a></li>
-        </ul>
         <form>
-            <input type="button" value="Back!" onclick="history.back()">
+            <input type="button" value="Add PBI" onclick="location='add'">
+            <input type="button" value="Modify" onclick="location='{{ modify }}'">
+            <input type="button" value="Delete" onclick="location='{{ delete }}'">
+            <input type="button" value="Back" onclick="location='{{ back }}'">
         </form>
     </div>
 
