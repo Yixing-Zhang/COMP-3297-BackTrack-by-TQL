@@ -5,6 +5,17 @@
     <title>PBI Add</title>
 </head>
 <body>
+    <div>
+        <h1>Project: {{ project.name }}</h1>
+        <h2>PBI Add</h2>
+    </div>
 
+    <div>
+        <form method="POST" class="post-form">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">Add</button>
+            <input type="button" value="Back" onclick="history.back()">
+        </form>
+    </div>
 </body>
 </html>

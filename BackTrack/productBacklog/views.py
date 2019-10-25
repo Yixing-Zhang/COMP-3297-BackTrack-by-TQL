@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.views.generic.edit import FormView
+from django.http import HttpResponseRedirect
 from .models import *
+from .forms import *
 
 
 # Create your views here.
@@ -40,13 +43,29 @@ class PBIMain(TemplateView):
         return context
 
 
-class PBIAdd(TemplateView):
+class PBIAdd(FormView):
     template_name = "pbi_add.html"
+    form_class = PBIForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        project = self.kwargs['project']
+        productBacklog = ProductBacklog.objects.get(project__pk=project)
+        if form.is_valid():
+            pbi = form.save(commit=False)
+            pbi.status = "Ready"
+            pbi.productBacklog = productBacklog
+            pbi.save()
+            return HttpResponseRedirect('/project/'+str(project)+'/productBacklog')
+
+        return render(request, self.template_name, {'form': form})
 
     def get_context_data(self, **kwargs):
         project = self.kwargs['project']
 
         context = super().get_context_data(**kwargs)
+        context['project'] = Project.objects.get(pk=project)
+        context['form'] = PBIForm()
         return context
 
 

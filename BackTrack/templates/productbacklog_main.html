@@ -45,7 +45,7 @@
             {% for pbi in pbi_list %}
                 <tr>
                     {% if pbi.status == "Finished" %}
-                        <td>{{pbi.name}}</td>
+                        <td><a href="pbi/{{ pbi.pk }}">{{pbi.name}}</a></td>
                         <td>{{pbi.estimated}}</td>
                         <td>{{pbi.status}}</td>
                         <td>{{pbi.priority}}</td>>
