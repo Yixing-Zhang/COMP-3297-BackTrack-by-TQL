@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PBI Main: {{ pbi.name }}</title>
+</head>
+<body>
+    <div>
+        <h1>PBI:</h1>
+        <h2>{{ pbi.name }}</h2>
+    </div>
+
+    <div>
+        <p><b>PBI Description: </b>{{ pbi.description }}</p>
+        <p><b>PBI Status: </b>{{ pbi.status }}</p>
+        <p><b>PBI Estimated: </b>{{ pbi.estimated }}</p>
+        <p><b>PBI Priority: </b>{{ pbi.priority }}</p>
+        <p><b>PBI Sprint Number: </b>{{ pbi.sprintNumber }}</p>
+    </div>
+
+    <div>
+        <ul>
+            <li><a href="../add">Add PBI</a></li>
+            <li><a href="modify">Modify PBI</a></li>
+            <li><a href="delete">Delete PBI</a></li>
+        </ul>
+        <a href="../">Back</a>
+    </div>
+
+</body>
+</html>

@@ -2,9 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Product Backlog: {{ project.name }}</title>
 </head>
 <body>
+    <div>
+        <h1>Product Backlog:</h1>
+        <h2>{{ project.name }}</h2>
+    </div>
+
+    <div>
+        <table border="1">
+            <tr>
+                <th>PBIs not finished</th>
+            </tr>
+            <tr>
+                <td><b>PBI name</b></td>
+                <td><b>PBI estimated</b></td>
+                <td><b>PBI status</b></td>
+                <td><b>PBI priority</b></td>
+            </tr>
+            {% for pbi in pbi_list %}
+                <tr>
+                    {% if pbi.status != "Finished" %}
+                        <td><a href="pbi/{{ pbi.pk }}">{{pbi.name}}</a></td>
+                        <td>{{pbi.estimated}}</td>
+                        <td>{{pbi.status}}</td>
+                        <td>{{pbi.priority}}</td>>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+        <table border="1">
+            <tr>
+                <th>PBIs finished</th>
+            </tr>
+            <tr>
+                <td><b>PBI name</b></td>
+                <td><b>PBI estimated</b></td>
+                <td><b>PBI status</b></td>
+                <td><b>PBI priority</b></td>
+            </tr>
+            {% for pbi in pbi_list %}
+                <tr>
+                    {% if pbi.status == "Finished" %}
+                        <td>{{pbi.name}}</td>
+                        <td>{{pbi.estimated}}</td>
+                        <td>{{pbi.status}}</td>
+                        <td>{{pbi.priority}}</td>>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div>
+        <a href="pbi/add">Add PBI</a>
+    </div>
 
 </body>
 </html>
