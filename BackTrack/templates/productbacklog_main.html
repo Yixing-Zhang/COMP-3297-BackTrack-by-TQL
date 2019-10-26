@@ -35,6 +35,14 @@
                     </tr>
                 {% endif %}
             {% endfor %}
+            <tr height=10></tr>
+            <tr><td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><b>Remaining estimated:</b></td>
+                <td>{{ remaining_estimated }}</td>
+            </tr>
         </table>
         <table border="1">
             <tr>
@@ -60,6 +68,21 @@
                     </tr>
                 {% endif %}
             {% endfor %}
+            <tr height=10></tr>
+            <tr><td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><b>Finished estimated:</b></td>
+                <td>{{ finished_estimated }}</td>
+            </tr>
+            <tr><td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td><b>Total estimated:</b></td>
+                <td>{{ total_estimated }}</td>
+            </tr>
         </table>
     </div>
 
