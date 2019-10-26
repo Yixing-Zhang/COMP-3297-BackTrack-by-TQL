@@ -6,4 +6,4 @@ class PBIForm(forms.ModelForm):
 
     class Meta:
         model = PBI
-        fields = ('name', 'description', 'estimated', 'priority')
+        fields = ('name', 'description', 'estimated', 'priority', 'status')

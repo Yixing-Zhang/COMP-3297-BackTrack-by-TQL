@@ -20,6 +20,7 @@
                 <td><b>PBI estimated</b></td>
                 <td><b>PBI status</b></td>
                 <td><b>PBI priority</b></td>
+                <td><b>Sprint Number</b></td>
             </tr>
             {% for pbi in pbi_list %}
                 <tr>
@@ -28,6 +29,7 @@
                         <td>{{pbi.estimated}}</td>
                         <td>{{pbi.status}}</td>
                         <td>{{pbi.priority}}</td>>
+                        <td>{{ pbi.sprintNumber }}</td>
                     {% endif %}
                 </tr>
             {% endfor %}
@@ -41,6 +43,7 @@
                 <td><b>PBI estimated</b></td>
                 <td><b>PBI status</b></td>
                 <td><b>PBI priority</b></td>
+                <td><b>Sprint Number</b></td>
             </tr>
             {% for pbi in pbi_list %}
                 <tr>
@@ -49,6 +52,7 @@
                         <td>{{pbi.estimated}}</td>
                         <td>{{pbi.status}}</td>
                         <td>{{pbi.priority}}</td>>
+                        <td>{{ pbi.sprintNumber  }}</td>
                     {% endif %}
                 </tr>
             {% endfor %}
