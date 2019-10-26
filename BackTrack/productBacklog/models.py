@@ -18,6 +18,7 @@ class PBI(models.Model):
     estimated = models.PositiveSmallIntegerField()
     priority = models.PositiveSmallIntegerField()
     sprintNumber = models.PositiveSmallIntegerField(null=True, blank=True)
+    cumulative = models.PositiveIntegerField(null=True, blank=True)
     productBacklog = models.ForeignKey(ProductBacklog, null=False, on_delete=models.CASCADE)
 
     def __str__(self):

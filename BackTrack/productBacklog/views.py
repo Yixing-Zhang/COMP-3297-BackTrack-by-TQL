@@ -22,8 +22,10 @@ class ProductBacklogMain(TemplateView):
         for pbi in context['pbi_list']:
             if pbi.status != "Finished":
                 remaining_estimated += pbi.estimated
+                pbi.cumulative = remaining_estimated
             else:
                 finished_estimated += pbi.estimated
+                pbi.cumulative = finished_estimated
         total_estimated = remaining_estimated + finished_estimated
         context['total_estimated'] = total_estimated
         context['finished_estimated'] = finished_estimated
@@ -49,7 +51,7 @@ class PBIMain(TemplateView):
 
 class PBIAdd(FormView):
     template_name = "pbi_add.html"
-    form_class = PBIForm
+    form_class = PBIAddForm
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -69,7 +71,7 @@ class PBIAdd(FormView):
 
         context = super().get_context_data(**kwargs)
         context['project'] = Project.objects.get(pk=project)
-        context['form'] = PBIForm()
+        context['form'] = PBIAddForm()
         return context
 
 
@@ -93,11 +95,11 @@ def pbi_modify(request, project_pk, pbi_pk):
     pbi = get_object_or_404(PBI, pk=pbi_pk)
     project = Project.objects.get(pk=project_pk)
     if request.method == "POST":
-        form = PBIForm(request.POST, instance=pbi)
+        form = PBIModifyForm(request.POST, instance=pbi)
         if form.is_valid():
             pbi = form.save(commit=False)
             pbi.save()
             return redirect('/project/' + str(project_pk) + '/productBacklog/pbi/' + str(pbi_pk), pk=pbi.pk)
     else:
-        form = PBIForm(instance=pbi)
+        form = PBIModifyForm(instance=pbi)
     return render(request, 'pbi_modify.html', {'form': form})

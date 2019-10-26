@@ -20,18 +20,20 @@
                 <td><b>PBI estimated</b></td>
                 <td><b>PBI status</b></td>
                 <td><b>PBI priority</b></td>
-                <td><b>Sprint Number</b></td>
+                <td><b>Sprint number</b></td>
+                <td><b>Cumulative story points</b></td>
             </tr>
             {% for pbi in pbi_list %}
-                <tr>
-                    {% if pbi.status != "Finished" %}
-                        <td><a href="pbi/{{ pbi.pk }}">{{pbi.name}}</a></td>
-                        <td>{{pbi.estimated}}</td>
-                        <td>{{pbi.status}}</td>
-                        <td>{{pbi.priority}}</td>>
+                {% if pbi.status != "Finished" %}
+                    <tr>
+                        <td><a href="pbi/{{ pbi.pk }}">{{ pbi.name }}</a></td>
+                        <td>{{ pbi.estimated }}</td>
+                        <td>{{ pbi.status }}</td>
+                        <td>{{ pbi.priority }}</td>>
                         <td>{{ pbi.sprintNumber }}</td>
-                    {% endif %}
-                </tr>
+                        <td>{{ pbi.cumulative }}</td>
+                    </tr>
+                {% endif %}
             {% endfor %}
         </table>
         <table border="1">
@@ -43,18 +45,20 @@
                 <td><b>PBI estimated</b></td>
                 <td><b>PBI status</b></td>
                 <td><b>PBI priority</b></td>
-                <td><b>Sprint Number</b></td>
+                <td><b>Sprint number</b></td>
+                <td><b>Cumulative story points</b></td>
             </tr>
             {% for pbi in pbi_list %}
-                <tr>
-                    {% if pbi.status == "Finished" %}
-                        <td><a href="pbi/{{ pbi.pk }}">{{pbi.name}}</a></td>
-                        <td>{{pbi.estimated}}</td>
-                        <td>{{pbi.status}}</td>
-                        <td>{{pbi.priority}}</td>>
-                        <td>{{ pbi.sprintNumber  }}</td>
-                    {% endif %}
-                </tr>
+                {% if pbi.status == "Finished" %}
+                    <tr>
+                        <td><a href="pbi/{{ pbi.pk }}">{{ pbi.name }}</a></td>
+                        <td>{{ pbi.estimated }}</td>
+                        <td>{{ pbi.status }}</td>
+                        <td>{{ pbi.priority }}</td>>
+                        <td>{{ pbi.sprintNumber }}</td>
+                        <td>{{ pbi.cumulative }}</td>
+                    </tr>
+                {% endif %}
             {% endfor %}
         </table>
     </div>
