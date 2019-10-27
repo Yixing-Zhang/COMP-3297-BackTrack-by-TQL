@@ -11,13 +11,18 @@ class ProductBacklog(models.Model):
 
 
 class PBI(models.Model):
+    STATUS_CHOICES = [
+        ('Finished', 'Finished'),
+        ('In process', 'In process'),
+        ('Ready', 'Ready')
+    ]
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
     # Status = "Finished" or "In process" or "Ready"
-    status = models.CharField(max_length=10)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='R')
     estimated = models.PositiveSmallIntegerField()
     priority = models.PositiveSmallIntegerField()
-    sprintNumber = models.PositiveSmallIntegerField(null=True, blank=True)
+    sprintNumber = models.PositiveSmallIntegerField(null=True, blank=True, default=None)
     cumulative = models.PositiveIntegerField(null=True, blank=True)
     productBacklog = models.ForeignKey(ProductBacklog, null=False, on_delete=models.CASCADE)
 
