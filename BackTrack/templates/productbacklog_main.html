@@ -17,20 +17,20 @@
             </tr>
             <tr>
                 <td><b>PBI name</b></td>
-                <td><b>PBI estimated</b></td>
-                <td><b>PBI status</b></td>
                 <td><b>PBI priority</b></td>
+                <td><b>PBI status</b></td>
                 <td><b>Sprint number</b></td>
+                <td><b>PBI estimated</b></td>
                 <td><b>Cumulative story points</b></td>
             </tr>
             {% for pbi in pbi_list %}
                 {% if pbi.status != "Finished" %}
                     <tr>
                         <td><a href="pbi/{{ pbi.pk }}">{{ pbi.name }}</a></td>
-                        <td>{{ pbi.estimated }}</td>
+                        <td>{{ pbi.priority }}</td>
                         <td>{{ pbi.status }}</td>
-                        <td>{{ pbi.priority }}</td>>
-                        <td>{{ pbi.sprintNumber }}</td>
+                        <td>{{ pbi.sprintNumber }}</td>>
+                        <td>{{ pbi.estimated }}</td>
                         <td>{{ pbi.cumulative }}</td>
                     </tr>
                 {% endif %}
@@ -50,20 +50,20 @@
             </tr>
             <tr>
                 <td><b>PBI name</b></td>
-                <td><b>PBI estimated</b></td>
-                <td><b>PBI status</b></td>
                 <td><b>PBI priority</b></td>
+                <td><b>PBI status</b></td>
                 <td><b>Sprint number</b></td>
+                <td><b>PBI estimated</b></td>
                 <td><b>Cumulative story points</b></td>
             </tr>
             {% for pbi in pbi_list %}
                 {% if pbi.status == "Finished" %}
                     <tr>
                         <td><a href="pbi/{{ pbi.pk }}">{{ pbi.name }}</a></td>
-                        <td>{{ pbi.estimated }}</td>
+                        <td>{{ pbi.priority }}</td>
                         <td>{{ pbi.status }}</td>
-                        <td>{{ pbi.priority }}</td>>
-                        <td>{{ pbi.sprintNumber }}</td>
+                        <td>{{ pbi.sprintNumber }}</td>>
+                        <td>{{ pbi.estimated }}</td>
                         <td>{{ pbi.cumulative }}</td>
                     </tr>
                 {% endif %}
