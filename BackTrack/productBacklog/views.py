@@ -85,15 +85,19 @@ class PBIDelete(DeleteView):
 
     def get_context_data(self, **kwargs):
         pbi = self.kwargs['pk']
+        project = self.kwargs['project_pk']
 
         context = super().get_context_data(**kwargs)
+        context['pbi_main'] = '/project/' + str(project) + '/productBacklog/pbi/' + str(pbi)
         context['pbi'] = PBI.objects.get(pk=pbi)
+        context['project'] = Project.objects.get(pk=project)
         return context
 
 
 def pbi_modify(request, project_pk, pbi_pk):
     pbi = get_object_or_404(PBI, pk=pbi_pk)
     project = Project.objects.get(pk=project_pk)
+    pbi_main = '/project/' + str(project_pk) + '/productBacklog/pbi/' + str(pbi_pk)
     if request.method == "POST":
         form = PBIModifyForm(request.POST, instance=pbi)
         if form.is_valid():
@@ -102,4 +106,4 @@ def pbi_modify(request, project_pk, pbi_pk):
             return redirect('/project/' + str(project_pk) + '/productBacklog/pbi/' + str(pbi_pk), pk=pbi.pk)
     else:
         form = PBIModifyForm(instance=pbi)
-    return render(request, 'pbi_modify.html', {'form': form})
+    return render(request, 'pbi_modify.html', {'form': form, 'project': project, 'pbi': pbi, 'pbi_main': pbi_main})

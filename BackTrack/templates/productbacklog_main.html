@@ -1,27 +1,33 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/productBacklog.css' %}">
     <meta charset="UTF-8">
     <title>Product Backlog: {{ project.name }}</title>
 </head>
 <body>
-    <div>
-        <h1>Product Backlog:</h1>
-        <h2>{{ project.name }}</h2>
+    <div class="page-header">
+        <h1><a href="..">Project: {{ project.name }}</a></h1>
+        <h2>Product Backlog</h2>
     </div>
 
-    <div>
-        <table border="1">
+    <div class="table" style="text-align:center; margin:0 auto;">
+        <table border="1" style="margin:0 auto;">
             <tr>
                 <th>PBIs not finished</th>
             </tr>
             <tr>
-                <td><b>PBI name</b></td>
-                <td><b>PBI priority</b></td>
-                <td><b>PBI status</b></td>
-                <td><b>Sprint number</b></td>
-                <td><b>PBI estimated</b></td>
-                <td><b>Cumulative story points</b></td>
+                <th width="10%"><b>PBI name</b></th>
+                <th width="10%"><b>PBI priority</b></th>
+                <th width="10%"><b>PBI status</b></th>
+                <th width="10%"><b>Sprint number</b></th>
+                <th width="10%"><b>PBI estimated</b></th>
+                <th width="10%"><b>Cumulative story points</b></th>
             </tr>
             {% for pbi in pbi_list %}
                 {% if pbi.status != "Finished" %}
@@ -44,17 +50,17 @@
                 <td>{{ remaining_estimated }}</td>
             </tr>
         </table>
-        <table border="1">
+        <table border="1" style="margin:0 auto;">
             <tr>
                 <th>PBIs finished</th>
             </tr>
             <tr>
-                <td><b>PBI name</b></td>
-                <td><b>PBI priority</b></td>
-                <td><b>PBI status</b></td>
-                <td><b>Sprint number</b></td>
-                <td><b>PBI estimated</b></td>
-                <td><b>Cumulative story points</b></td>
+                <th width="10%"><b>PBI name</b></th>
+                <th width="10%"><b>PBI priority</b></th>
+                <th width="10%"><b>PBI status</b></th>
+                <th width="10%"><b>Sprint number</b></th>
+                <th width="10%"><b>PBI estimated</b></th>
+                <th width="10%"><b>Cumulative story points</b></th>
             </tr>
             {% for pbi in pbi_list %}
                 {% if pbi.status == "Finished" %}
@@ -86,7 +92,7 @@
         </table>
     </div>
     <br/>
-    <div>
+    <div class="button" style="text-align:center;">
         <form method="POST" class="post-form">{% csrf_token %}
             <input type="button" value="Add PBI" onclick="location='pbi/add'">
             <input type="button" value="Back" onclick="history.back()">
