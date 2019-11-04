@@ -1,6 +1,6 @@
 .page-header {
-    background-color: #E9933F;
-    margin-top: 0;
+    background: linear-gradient(#FF5A09, #F3843E, #FF9900);
+    margin: 0;
     padding: 20px 20px 20px 40px;
 }
 
@@ -20,7 +20,46 @@ h1, h2, h3, h4 {
     font-family: 'Lobster', cursive;
 }
 
-table, th, td
-{
-    border: 1px solid cornflowerblue;
+th {
+    background-color: #D6D3C4;
+}
+
+td a {
+    color: #7A6C56;
+}
+
+.menu {
+    margin-top: -3px;
+}
+
+.menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.menu li {
+    float: left;
+}
+
+.menu li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.menu li a:hover {
+    background-color: #505050;
+}
+
+.active {
+    background-color: #6E6E6E;
+}
+
+.main {
+    background-color: #F2F2F2;
 }

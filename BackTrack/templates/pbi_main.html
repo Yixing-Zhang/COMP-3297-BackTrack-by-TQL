@@ -12,42 +12,56 @@
 </head>
 <body>
     <div class="page-header">
-        <h1><a href="../..">Project: {{ project.name }}</a></h1>
-        <h2>PBI: {{ pbi.name }}</h2>
+        <h1><a href="../..">BackTrack</a></h1>
+        <h2><a href="../..">Project: {{ project.name }}</a>&#160;&#160;&#160;PBI: {{ pbi.name }}</h2>
     </div>
 
-    <div class="table">
-        <table border="0">
-            <tr>
-                <td><b>Description:</b></td>
-                <td>{{ pbi.description }}</td>
-            </tr>
-            <tr>
-                <td><b>Status:</b></td>
-                <td>{{ pbi.status }}</td>
-            </tr>
-            <tr>
-                <td><b>Estimated:</b></td>
-                <td>{{ pbi.estimated }}</td>
-            </tr>
-            <tr>
-                <td><b>Priority:</b></td>
-                <td>{{ pbi.priority }}</td>
-            </tr>
-            <tr>
-                <td><b>Sprint Number:</b></td>
-                <td>{{ pbi.sprintNumber }}</td>
-            </tr>
-        </table>
+    <div class="menu">
+        <ul>
+            <li><a href="../../..">My project</a></li>
+            <li><a href="../..">{{ project.name }}</a></li>
+            <li><a href="..">Product Backlog</a></li>
+            <li><a href="../../sprintBacklog">Sprint Backlog</a></li>
+            <li><a class="active" href="">PBI</a></li>
+            <li style="float:right"><a href="">User</a></li>
+        </ul>
     </div>
 
-    <div>
-        <form>
-            <input type="button" value="Add PBI" onclick="location='add'">
-            <input type="button" value="Modify" onclick="location='{{ modify }}'">
-            <input type="button" value="Delete" onclick="location='{{ delete }}'">
-            <input type="button" value="Back" onclick="location='{{ back }}'">
-        </form>
+    <div class="main">
+        <br/>
+        <div class="table" style="text-align:center; margin:0 auto;">
+            <table border="0" style="margin:0 auto;">
+                <tr>
+                    <td><b>Description:</b></td>
+                    <td>{{ pbi.description }}</td>
+                </tr>
+                <tr>
+                    <td><b>Status:</b></td>
+                    <td>{{ pbi.status }}</td>
+                </tr>
+                <tr>
+                    <td><b>Estimated:</b></td>
+                    <td>{{ pbi.estimated }}</td>
+                </tr>
+                <tr>
+                    <td><b>Priority:</b></td>
+                    <td>{{ pbi.priority }}</td>
+                </tr>
+                <tr>
+                    <td><b>Sprint Number:</b></td>
+                    <td>{{ pbi.sprintNumber }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="text-align:center;">
+            <form>
+                <input type="button" value="Add PBI" onclick="location='add'">
+                <input type="button" value="Modify" onclick="location='{{ modify }}'">
+                <input type="button" value="Delete" onclick="location='{{ delete }}'">
+                <input type="button" value="Back" onclick="location='{{ back }}'">
+            </form>
+        </div>
     </div>
 
 </body>

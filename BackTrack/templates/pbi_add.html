@@ -12,16 +12,30 @@
 </head>
 <body>
     <div class="page-header">
-        <h1><a href="../..">Project: {{ project.name }}</a></h1>
-        <h2>PBI Add</h2>
+        <h1><a href="../..">BackTrack</a></h1>
+        <h2><a href="../..">Project: {{ project.name }}</a>&#160;&#160;&#160;PBI: Add</h2>
     </div>
 
-    <div>
-        <form method="POST" class="post-form">{% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="save btn btn-default">Add</button>
-            <input type="button" value="Back" onclick="history.back()">
-        </form>
+    <div class="menu">
+        <ul>
+            <li><a href="../../..">My project</a></li>
+            <li><a href="../..">{{ project.name }}</a></li>
+            <li><a href="..">Product Backlog</a></li>
+            <li><a href="../../sprintBacklog">Sprint Backlog</a></li>
+            <li><a class="active" href="">PBI</a></li>
+            <li style="float:right"><a href="">User</a></li>
+        </ul>
+    </div>
+
+    <div class="main">
+        <div>
+            <br/>
+            <form method="POST" class="post-form">{% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="save btn btn-default">Add</button>
+                <input type="button" value="Back" onclick="history.back()">
+            </form>
+        </div>
     </div>
 </body>
 </html>
