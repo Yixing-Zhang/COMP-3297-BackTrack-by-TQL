@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('project/', include('project.urls')),
     path('project/<int:project_pk>/productBacklog/', include('productBacklog.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
