@@ -19,12 +19,12 @@ class PBI(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
     # Status = "Finished" or "In process" or "Ready"
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='R')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Ready')
     estimated = models.PositiveSmallIntegerField()
     priority = models.PositiveSmallIntegerField()
-    sprintNumber = models.PositiveSmallIntegerField(null=True, blank=True, default=None)
     cumulative = models.PositiveIntegerField(null=True, blank=True)
     productBacklog = models.ForeignKey(ProductBacklog, null=False, on_delete=models.CASCADE)
+    sprintBacklog = models.ForeignKey('sprintBacklog.SprintBacklog', null=True, blank=True, default=None, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.name
