@@ -11,108 +11,120 @@
     <title>Product Backlog: {{ project.name }}</title>
 </head>
 <body>
-    <div class="page-header">
-        <h1>BackTrack</h1>
-        <h2><a href="..">Project: {{ project.name }}</a>&#160;&#160;&#160;Product Backlog</h2>
-    </div>
+    {% if user.is_authenticated %}
+        <div class="page-header">
+            <h1>BackTrack</h1>
+            <h2><a href="..">Project: {{ project.name }}</a>&#160;&#160;&#160;Product Backlog</h2>
+        </div>
 
-    <div class="menu">
-        <ul>
-            <li><a href="../..">My project</a></li>
-            <li><a href="..">{{ project.name }}</a></li>
-            <li><a class="active" href="">Product Backlog</a></li>
-            <li><a href="../sprintBacklog">Sprint Backlog</a></li>
-            <li><a href="pbi/add">PBI</a></li>
-            <li style="float:right"><a href="">User</a></li>
-        </ul>
-    </div>
+        <div class="menu">
+            <ul>
+                <li><a href="../..">My project</a></li>
+                <li><a href="..">{{ project.name }}</a></li>
+                <li><a class="active" href="">Product Backlog</a></li>
+                <li><a href="../sprintBacklog">Sprint Backlog</a></li>
+                <li><a href="pbi/add">PBI</a></li>
+                <li><a href="">User: {{ user.get_username }}</a></li>
+                <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+            </ul>
+        </div>
 
-    <div class="main">
-        <div class="table" style="text-align:center; margin:0 auto;">
-            <table border="1" style="margin:0 auto;">
-                <tr>
-                    <th>PBIs not finished</th>
-                </tr>
-                <tr>
-                    <th width="10%"><b>PBI name</b></th>
-                    <th width="10%"><b>PBI priority</b></th>
-                    <th width="10%"><b>PBI status</b></th>
-                    <th width="10%"><b>Sprint number</b></th>
-                    <th width="10%"><b>PBI estimated</b></th>
-                    <th width="10%"><b>Cumulative story points</b></th>
-                </tr>
-                {% for pbi in pbi_list %}
-                    {% if pbi.status != "Finished" %}
-                        <tr>
-                            <td><a href="pbi/{{ pbi.pk }}">{{ pbi.name }}</a></td>
-                            <td>{{ pbi.priority }}</td>
-                            <td>{{ pbi.status }}</td>
-                            <td>{{ pbi.sprintNumber }}</td>>
-                            <td>{{ pbi.estimated }}</td>
-                            <td>{{ pbi.cumulative }}</td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                <tr height=10></tr>
-                <tr><td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><b>Remaining estimated:</b></td>
-                    <td>{{ remaining_estimated }}</td>
-                </tr>
-            </table>
+        <div class="main">
+            <div class="table" style="text-align:center; margin:0 auto;">
+                <table border="1" style="margin:0 auto;">
+                    <tr>
+                        <th>PBIs not finished</th>
+                    </tr>
+                    <tr>
+                        <th width="10%"><b>PBI name</b></th>
+                        <th width="10%"><b>PBI priority</b></th>
+                        <th width="10%"><b>PBI status</b></th>
+                        <th width="10%"><b>Sprint number</b></th>
+                        <th width="10%"><b>PBI estimated</b></th>
+                        <th width="10%"><b>Cumulative story points</b></th>
+                    </tr>
+                    {% for pbi in pbi_list %}
+                        {% if pbi.status != "Finished" %}
+                            <tr>
+                                <td><a href="pbi/{{ pbi.pk }}">{{ pbi.name }}</a></td>
+                                <td>{{ pbi.priority }}</td>
+                                <td>{{ pbi.status }}</td>
+                                <td>{{ pbi.sprintNumber }}</td>>
+                                <td>{{ pbi.estimated }}</td>
+                                <td>{{ pbi.cumulative }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    <tr height=10></tr>
+                    <tr><td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><b>Remaining estimated:</b></td>
+                        <td>{{ remaining_estimated }}</td>
+                    </tr>
+                </table>
+                <br/>
+                <hr color=#432F21>
+                <table border="1" style="margin:0 auto;">
+                    <tr>
+                        <th>PBIs finished</th>
+                    </tr>
+                    <tr>
+                        <th width="10%"><b>PBI name</b></th>
+                        <th width="10%"><b>PBI priority</b></th>
+                        <th width="10%"><b>PBI status</b></th>
+                        <th width="10%"><b>Sprint number</b></th>
+                        <th width="10%"><b>PBI estimated</b></th>
+                        <th width="10%"><b>Cumulative story points</b></th>
+                    </tr>
+                    {% for pbi in pbi_list %}
+                        {% if pbi.status == "Finished" %}
+                            <tr>
+                                <td><a href="pbi/{{ pbi.pk }}">{{ pbi.name }}</a></td>
+                                <td>{{ pbi.priority }}</td>
+                                <td>{{ pbi.status }}</td>
+                                <td>{{ pbi.sprintNumber }}</td>>
+                                <td>{{ pbi.estimated }}</td>
+                                <td>{{ pbi.cumulative }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                    <tr height=10></tr>
+                    <tr><td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><b>Finished estimated:</b></td>
+                        <td>{{ finished_estimated }}</td>
+                    </tr>
+                    <tr><td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><b>Total estimated:</b></td>
+                        <td>{{ total_estimated }}</td>
+                    </tr>
+                </table>
+            </div>
             <br/>
-            <hr color=#432F21>
-            <table border="1" style="margin:0 auto;">
-                <tr>
-                    <th>PBIs finished</th>
-                </tr>
-                <tr>
-                    <th width="10%"><b>PBI name</b></th>
-                    <th width="10%"><b>PBI priority</b></th>
-                    <th width="10%"><b>PBI status</b></th>
-                    <th width="10%"><b>Sprint number</b></th>
-                    <th width="10%"><b>PBI estimated</b></th>
-                    <th width="10%"><b>Cumulative story points</b></th>
-                </tr>
-                {% for pbi in pbi_list %}
-                    {% if pbi.status == "Finished" %}
-                        <tr>
-                            <td><a href="pbi/{{ pbi.pk }}">{{ pbi.name }}</a></td>
-                            <td>{{ pbi.priority }}</td>
-                            <td>{{ pbi.status }}</td>
-                            <td>{{ pbi.sprintNumber }}</td>>
-                            <td>{{ pbi.estimated }}</td>
-                            <td>{{ pbi.cumulative }}</td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                <tr height=10></tr>
-                <tr><td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><b>Finished estimated:</b></td>
-                    <td>{{ finished_estimated }}</td>
-                </tr>
-                <tr><td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><b>Total estimated:</b></td>
-                    <td>{{ total_estimated }}</td>
-                </tr>
-            </table>
+            <div class="button" style="text-align:center;">
+                <form method="POST" class="post-form">{% csrf_token %}
+                    <input type="button" value="Add PBI" onclick="location='pbi/add'">
+                    <input type="button" value="Back" onclick="location='..'">
+                </form>
+            </div>
         </div>
-        <br/>
-        <div class="button" style="text-align:center;">
-            <form method="POST" class="post-form">{% csrf_token %}
-                <input type="button" value="Add PBI" onclick="location='pbi/add'">
-                <input type="button" value="Back" onclick="history.back()">
-            </form>
+
+    {% else %}
+        <div class="page-header">
+            <h1>BackTrack</h1>
+            <h2>Error: Not Logged in</h2>
         </div>
-    </div>
+        <div style="text-align:center; margin:0 auto; padding: 20px 20px 20px 40px;">
+            <p>Please login first. <a href="{% url 'login'%}?next={{request.path}}">Click here.</a> </p>
+        </div>
+    {% endif %}
 
 </body>
 </html>

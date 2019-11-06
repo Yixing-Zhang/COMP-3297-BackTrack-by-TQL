@@ -11,30 +11,68 @@
     <title>PBI Modify: {{ pbi.name }}</title>
 </head>
 <body>
-     <div class="page-header">
-         <h1><a href="../..">BackTrack</a></h1>
-         <h2><a href="../..">Project: {{ project.name }}</a>&#160;&#160;&#160;PBI Modify: {{ pbi.name }}</h2>
-    </div>
-
-     <div class="menu">
-        <ul>
-            <li><a href="../../../..">My project</a></li>
-            <li><a href="../../..">{{ project.name }}</a></li>
-            <li><a href="../..">Product Backlog</a></li>
-            <li><a href="../../../sprintBacklog">Sprint Backlog</a></li>
-            <li><a class="active" href="..">PBI</a></li>
-            <li style="float:right"><a href="">User</a></li>
-        </ul>
-    </div>
-
-     <div class="main">
-        <div>
-            <form method="POST" class="post-form">{% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="save btn btn-default">Modify</button>
-                <input type="button" value="Back" onclick="history.back()">
-            </form>
+    {% if user.is_authenticated %}
+         <div class="page-header">
+             <h1><a href="../..">BackTrack</a></h1>
+             <h2><a href="../..">Project: {{ project.name }}</a>&#160;&#160;&#160;PBI Modify: {{ pbi.name }}</h2>
         </div>
-     </div>
+
+         <div class="menu">
+            <ul>
+                <li><a href="../../../..">My project</a></li>
+                <li><a href="../../..">{{ project.name }}</a></li>
+                <li><a href="../..">Product Backlog</a></li>
+                <li><a href="../../../sprintBacklog">Sprint Backlog</a></li>
+                <li><a class="active" href="..">PBI</a></li>
+                <li><a href="">User: {{ user.get_username }}</a></li>
+                <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+            </ul>
+        </div>
+
+         <div class="main">
+            <div>
+                <form method="POST" class="post-form" style="text-align:center; margin:0 auto;">{% csrf_token %}
+                    <table style="margin:0 auto;">
+                        <tr>
+                            <td>{{ form.name.label_tag }}</td>
+                            <td>{{ form.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.description.label_tag }}</td>
+                            <td>{{ form.description }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.estimated.label_tag }}</td>
+                            <td>{{ form.estimated }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.priority.label_tag }}</td>
+                            <td>{{ form.priority }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.status.label_tag }}</td>
+                            <td>{{ form.status }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.sprintNumber.label_tag }}</td>
+                            <td>{{ form.sprintNumber }}</td>
+                        </tr>
+                    </table>
+                    <button type="submit" class="save btn btn-default">Modify</button>
+                    <input type="button" value="Back" onclick="history.back()">
+                </form>
+            </div>
+         </div>
+
+    {% else %}
+        <div class="page-header">
+            <h1>BackTrack</h1>
+            <h2>Error: Not Logged in</h2>
+        </div>
+        <div style="text-align:center; margin:0 auto; padding: 20px 20px 20px 40px;">
+            <p>Please login first. <a href="{% url 'login'%}?next={{request.path}}">Click here.</a> </p>
+        </div>
+    {% endif %}
+
 </body>
 </html>
