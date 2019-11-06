@@ -19,7 +19,7 @@ class SprintBacklog(models.Model):
     time = models.DateTimeField(auto_now=False, auto_now_add=True)
 
     def __str__(self):
-        return self.project.name + " sprint" + str(self.sprintNumber)
+        return self.project.name + " sprint " + str(self.sprintNumber)
 
 
 class Task(models.Model):
