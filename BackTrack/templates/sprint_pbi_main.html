@@ -8,13 +8,13 @@
     <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{% static 'css/productBacklog.css' %}">
     <meta charset="UTF-8">
-    <title>PBI Add</title>
+    <title>Sprint PBI Main: {{ pbi.name }}</title>
 </head>
 <body>
     {% if user.is_authenticated %}
         <div class="page-header">
             <h1><a href="../..">BackTrack</a></h1>
-            <h2><a href="../..">Project: {{ project.name }}</a>&#160;&#160;&#160;PBI: Add</h2>
+            <h2><a href="../..">Project: {{ project.name }}</a>&#160;&#160;&#160;PBI: {{ pbi.name }}</h2>
         </div>
 
         <div class="menu">
@@ -30,29 +30,36 @@
         </div>
 
         <div class="main">
-            <div style="text-align:center; margin:0 auto;">
-                <br/>
-                <form method="POST" class="post-form">{% csrf_token %}
-                    <table style="margin:0 auto;">
-                        <tr>
-                            <td>{{ form.name.label_tag }}</td>
-                            <td>{{ form.name }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ form.description.label_tag }}</td>
-                            <td>{{ form.description }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ form.estimated.label_tag }}</td>
-                            <td>{{ form.estimated }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ form.priority.label_tag }}</td>
-                            <td>{{ form.priority }}</td>
-                        </tr>
-                    </table>
-                    <button type="submit" class="save btn btn-default">Add</button>
-                    <input type="button" value="Back" onclick="history.back()">
+            <br/>
+            <div class="table" style="text-align:center; margin:0 auto;">
+                <table border="0" style="margin:0 auto;">
+                    <tr>
+                        <td><b>Description:</b></td>
+                        <td>{{ pbi.description }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Status:</b></td>
+                        <td>{{ pbi.status }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Estimated:</b></td>
+                        <td>{{ pbi.estimated }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Priority:</b></td>
+                        <td>{{ pbi.priority }}</td>
+                    </tr>
+                    <tr>
+                        <td><b>Sprint Number:</b></td>
+                        <td>{{ pbi.sprintBacklog }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div style="text-align:center;">
+                <form method="POST" action="{% url 'remove' project_pk=project.pk pbi_pk=pbi.pk %}">{% csrf_token %}
+                    <button type="submit" class="button">Remove PBI</button>
+                    <input type="button" value="Back" onclick="location='/project/{{ project.pk }}/sprintBacklog'">
                 </form>
             </div>
         </div>

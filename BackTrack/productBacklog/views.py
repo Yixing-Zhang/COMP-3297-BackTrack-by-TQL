@@ -42,9 +42,6 @@ class PBIMain(TemplateView):
         pbi = self.kwargs['pbi_pk']
 
         context = super().get_context_data(**kwargs)
-        context['delete'] = str(pbi) + '/delete'
-        context['modify'] = str(pbi) + '/modify'
-        context['back'] = '/project/' + str(project) + '/productBacklog'
         context["project"] = Project.objects.get(pk=project)
         context['pbi'] = PBI.objects.get(pk=pbi)
         return context

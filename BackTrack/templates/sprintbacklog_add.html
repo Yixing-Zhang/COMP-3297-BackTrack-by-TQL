@@ -8,23 +8,23 @@
     <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{% static 'css/productBacklog.css' %}">
     <meta charset="UTF-8">
-    <title>PBI Add</title>
+    <title>Sprint Backlog: {{project.name}} Add</title>
 </head>
 <body>
     {% if user.is_authenticated %}
         <div class="page-header">
             <h1><a href="../..">BackTrack</a></h1>
-            <h2><a href="../..">Project: {{ project.name }}</a>&#160;&#160;&#160;PBI: Add</h2>
+            <h2><a href="../..">Project: {{ project.name }}</a>&#160;&#160;&#160;Sprint Backlog: Add</h2>
         </div>
 
         <div class="menu">
             <ul>
-                <li><a href="../../..">My project</a></li>
-                <li><a href="../..">{{ project.name }}</a></li>
-                <li><a href="..">Product Backlog</a></li>
-                <li><a href="../../sprintBacklog">Sprint Backlog</a></li>
-                <li><a class="active" href="">PBI</a></li>
-                <li><a href="../../../../accounts/profile">User: {{ user.get_username }}</a></li>
+                <li><a href="../..">My project</a></li>
+                <li><a href="..">{{ project.name }}</a></li>
+                <li><a href="../productBacklog">Product Backlog</a></li>
+                <li><a class="active" href="">Sprint Backlog</a></li>
+                <li><a href="pbi/add">PBI</a></li>
+                <li><a href="../../../accounts/profile">User: {{ user.get_username }}</a></li>
                 <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
             </ul>
         </div>
@@ -35,20 +35,16 @@
                 <form method="POST" class="post-form">{% csrf_token %}
                     <table style="margin:0 auto;">
                         <tr>
-                            <td>{{ form.name.label_tag }}</td>
-                            <td>{{ form.name }}</td>
+                            <td>{{ form.sprintNumber.label_tag }}</td>
+                            <td>{{ form.sprintNumber }}</td>
                         </tr>
                         <tr>
-                            <td>{{ form.description.label_tag }}</td>
-                            <td>{{ form.description }}</td>
+                            <td>{{ form.capacity.label_tag }}</td>
+                            <td>{{ form.capacity }}</td>
                         </tr>
                         <tr>
-                            <td>{{ form.estimated.label_tag }}</td>
-                            <td>{{ form.estimated }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ form.priority.label_tag }}</td>
-                            <td>{{ form.priority }}</td>
+                            <td>{{ form.ddl.label_tag }}</td>
+                            <td>{{ form.ddl }}</td>
                         </tr>
                     </table>
                     <button type="submit" class="save btn btn-default">Add</button>

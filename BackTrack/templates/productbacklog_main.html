@@ -49,7 +49,7 @@
                                 <td><a href="pbi/{{ pbi.pk }}">{{ pbi.name }}</a></td>
                                 <td>{{ pbi.priority }}</td>
                                 <td>{{ pbi.status }}</td>
-                                <td>{{ pbi.sprintBacklog.sprintNumber }}</td>>
+                                <td>{{ pbi.sprintBacklog.sprintNumber }}</td>
                                 <td>{{ pbi.estimated }}</td>
                                 <td>{{ pbi.cumulative }}</td>
                             </tr>
@@ -122,7 +122,7 @@
             <h2>Error: Not Logged in</h2>
         </div>
         <div style="text-align:center; margin:0 auto; padding: 20px 20px 20px 40px;">
-            <p>Please login first. <a href="{% url 'login'%}?next={{request.path}}">Click here.</a> </p>
+            <p>Please login first. <a href="{% url 'login'%}">Click here.</a> </p>
         </div>
     {% endif %}
 

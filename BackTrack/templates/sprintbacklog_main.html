@@ -43,13 +43,14 @@
                     <table width="100%" border="1" style="margin:0 auto;">
                         <tr>
                             <th width="10%">PBI</th>
-                            <th width="80%">Task</th>
-                            <th width="10%">PBI Total Estimated Hours</th>
+                            <th width="70%">Task</th>
+                            <th width="10%">Remaining Estimated Hours</th>
+                            <th width="10%">Total Estimated Hours</th>
                         </tr>
                         {% for pbi, tasks in rows %}
                         <tr>
                             <td width="10%"><a href="pbi/{{ pbi.pk }}">{{ pbi.name }}</a></td>
-                            <td width="80%">
+                            <td width="70%">
                                 {% for task in tasks %}
                                     {% if task.owner %}
                                         {% if task.status == "In process" %}
@@ -67,18 +68,25 @@
                                 {% endfor %}
                                 <a style="color:black;" href="pbi/{{ pbi.pk }}/task/add"><b>Add task</b></a>
                             </td>
+                            <td width="10%">{{pbi.remainingTaskHours}}</td>
                             <td width="10%">{{ pbi.taskHours }}</td>
                         </tr>
                         {% endfor %}
+                    </table>
+                    <table width="100%" border="1" style="margin:0 auto;">
                         <tr>
                             <th width="10%"><a style="color: black" href="pbi/add">Add PBI</a></th>
-                            <th width="80%"></th>
+                            <th width="17.5%">DDL</th>
+                            <th style="color: red" width="17.5%">{{ project.activeSprint.ddl }}</th>
+                            <th width="17.5%">Capacity</th>
+                            <th width="17.5%">{{ project.activeSprint.capacity }}</th>
+                            <th width="10%">{{ totalRemainingHours}}</th>
                             <th width="10%">{{ totalHours }}</th>
                         </tr>
                     </table>
                     <br/>
-                    <form method="POST" class="post-form">{% csrf_token %}
-                        <button type="submit" class="save btn btn-default">Finish</button>
+                    <form method="POST" action="{% url 'finish' project_pk=project.pk %}">{% csrf_token %}
+                        <button type="submit" class="button">Finish</button>
                         <input type="button" value="Back" onclick="location='..'">
                     </form>
                 {% else %}
@@ -86,6 +94,7 @@
                     <input type="button" value="New sprint" onclick="location='add'">
                     <input type="button" value="Back" onclick="location='..'">
                 {% endif %}
+            </div>
         </div>
 
     {% else %}
@@ -94,7 +103,7 @@
             <h2>Error: Not Logged in</h2>
         </div>
         <div style="text-align:center; margin:0 auto; padding: 20px 20px 20px 40px;">
-            <p>Please login first. <a href="{% url 'login'%}?next={{request.path}}">Click here.</a> </p>
+            <p>Please login first. <a href="{% url 'login'%}">Click here.</a> </p>
         </div>
     {% endif %}
 

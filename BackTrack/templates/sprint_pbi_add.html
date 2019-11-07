@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/productBacklog.css' %}">
+    <meta charset="UTF-8">
+    <title>Sprint PBI Add: {{ project.name }}</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <div class="page-header">
+            <h1>BackTrack</h1>
+            <h2>Project: {{ project.name }}   Sprint PBI Add</h2>
+        </div>
+
+        <div class="menu">
+            <ul>
+                <li><a href="../../..">My project</a></li>
+                <li><a href="../..">{{ project.name }}</a></li>
+                <li><a href="../../productBacklog">Product Backlog</a></li>
+                <li><a href="..">Sprint Backlog</a></li>
+                <li><a class="active" href="">PBI</a></li>
+                <li><a href="../../../accounts/profile">User: {{ user.get_username }}</a></li>
+                <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+            </ul>
+        </div>
+
+        <div class="main">
+            {% if project.activeSprint %}
+                <div class="main">
+                    <div class="table" style="text-align:center; margin:0 auto;">
+                        <table border="1" style="margin:0 auto;">
+                            <tr>
+                                <th>PBIs Ready</th>
+                            </tr>
+                            <tr>
+                                <th width="10%"><b>PBI name</b></th>
+                                <th width="10%"><b>PBI Description</b></th>
+                                <th width="10%"><b>PBI priority</b></th>
+                                <th width="10%"><b>PBI estimated</b></th>
+                                <th width="10%"><b>Cumulative story points</b></th>
+                                <th width="10%"><b>Add to sprint</b></th>
+                            </tr>
+                            {% for pbi in pbi_list %}
+                                {% if pbi.status == "Ready" %}
+                                    <tr>
+                                        <td>{{ pbi.name }}</td>
+                                        <td>{{ pbi.description }}</td>
+                                        <td>{{ pbi.priority }}</td>
+                                        <td>{{ pbi.estimated }}</td>
+                                        <td>{{ pbi.cumulative }}</td>
+                                        <td><a href="add/{{ pbi.pk }}">Add</a></td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </table>
+                        <br/>
+                            <input type="button" value="Back" onclick="location='..'">
+                    </div>
+                </div>
+            {% else %}
+            <div style="text-align:center;">
+                <p style="font-size: 25pt;">No active sprint found.</p>
+                <br/>
+                <input type="button" value="New sprint" onclick="location='../add'">
+                <input type="button" value="Back" onclick="location='..'">
+            </div>
+            {% endif %}
+        </div>
+
+    {% else %}
+        <div class="page-header">
+            <h1>BackTrack</h1>
+            <h2>Error: Not Logged in</h2>
+        </div>
+        <div style="text-align:center; margin:0 auto; padding: 20px 20px 20px 40px;">
+            <p>Please login first. <a href="{% url 'login'%}">Click here.</a> </p>
+        </div>
+    {% endif %}
+</body>
+</html>

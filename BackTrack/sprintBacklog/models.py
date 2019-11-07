@@ -10,7 +10,7 @@ class SprintBacklog(models.Model):
         ('In process', 'In process')
     ]
 
-    project = models.OneToOneField(Project, null=False, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, null=False, on_delete=models.CASCADE)
     sprintNumber = models.PositiveSmallIntegerField(null=False, blank=False)
     capacity = models.PositiveSmallIntegerField(null=False, blank=False)
     # Status = "Finished" or "In process"
