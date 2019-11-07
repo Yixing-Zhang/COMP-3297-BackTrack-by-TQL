@@ -24,7 +24,7 @@
                 <li><a href="../..">Product Backlog</a></li>
                 <li><a href="../../../sprintBacklog">Sprint Backlog</a></li>
                 <li><a class="active" href="..">PBI</a></li>
-                <li><a href="">User: {{ user.get_username }}</a></li>
+                <li><a href="../../../../../accounts/profile">User: {{ user.get_username }}</a></li>
                 <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
             </ul>
         </div>

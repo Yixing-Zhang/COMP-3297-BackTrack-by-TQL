@@ -20,6 +20,14 @@ h1, h2, h3, h4 {
     font-family: 'Lobster', cursive;
 }
 
+td a.owned {
+    color: red;
+}
+
+td a.not_owned {
+    color: deepskyblue;
+}
+
 th {
     background-color: #D6D3C4;
 }

@@ -3,6 +3,7 @@ from django.views.generic import TemplateView, FormView, DeleteView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from .models import *
+from project.models import Project
 from .forms import *
 
 

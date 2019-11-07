@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/productBacklog.css' %}">
+    <meta charset="UTF-8">
+    <title>Sprint Backlog: {{ project.name }}</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <div class="page-header">
+            <h1>BackTrack</h1>
+            <h2><a href="..">Project: {{ project.name }}</a>&#160;&#160;&#160;Sprint Backlog</h2>
+        </div>
+
+        <div class="menu">
+            <ul>
+                <li><a href="../..">My project</a></li>
+                <li><a href="..">{{ project.name }}</a></li>
+                <li><a href="../productBacklog">Product Backlog</a></li>
+                <li><a class="active" href="">Sprint Backlog</a></li>
+                <li><a href="pbi/add">PBI</a></li>
+                <li><a href="../../../accounts/profile">User: {{ user.get_username }}</a></li>
+                <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+            </ul>
+        </div>
+
+        <div class="main">
+            <div style="text-align:center;">
+                {% if project.activeSprint %}
+                    <p style="font-family: 'Lobster', cursive; font-size: 25pt;">Sprint {{ project.activeSprint.sprintNumber }}</p>
+                {% else %}
+                    <p style="font-size: 25pt;">No active sprint found.</p>
+                {% endif %}
+            </div>
+
+            <div class="table" style="text-align:center; margin:0 auto;">
+                {% if project.activeSprint %}
+                    <table width="100%" border="1" style="margin:0 auto;">
+                        <tr>
+                            <th width="10%">PBI</th>
+                            <th width="80%">Task</th>
+                            <th width="10%">PBI Total Estimated Hours</th>
+                        </tr>
+                        {% for pbi, tasks in rows %}
+                        <tr>
+                            <td width="10%"><a href="pbi/{{ pbi.pk }}">{{ pbi.name }}</a></td>
+                            <td width="80%">
+                                {% for task in tasks %}
+                                    {% if task.owner %}
+                                        {% if task.status == "In process" %}
+                                            <a style="color: red;" href="pbi/{{ pbi.pk }}/task/{{ task.pk }}">{{ task.name }}({{ task.owner }}, {{ task.estimated}})</a>&#160;
+                                        {% else %}
+                                            <a href="pbi/{{ pbi.pk }}/task/{{ task.pk }}">{{ task.name }}({{ task.owner }}, {{ task.estimated}})</a>&#160;
+                                        {% endif %}
+                                    {% else %}
+                                        {% if task.status == "In process" %}
+                                            <a style="color: red;" href="pbi/{{ pbi.pk }}/task/{{ task.pk }}">{{ task.name }}({{ task.estimated}})</a>&#160;
+                                        {% else %}
+                                            <a href="pbi/{{ pbi.pk }}/task/{{ task.pk }}">{{ task.name }}({{ task.estimated}})</a>&#160;
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                <a style="color:black;" href="pbi/{{ pbi.pk }}/task/add"><b>Add task</b></a>
+                            </td>
+                            <td width="10%">{{ pbi.taskHours }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th width="10%"><a style="color: black" href="pbi/add">Add PBI</a></th>
+                            <th width="80%"></th>
+                            <th width="10%">{{ totalHours }}</th>
+                        </tr>
+                    </table>
+                    <br/>
+                    <form method="POST" class="post-form">{% csrf_token %}
+                        <button type="submit" class="save btn btn-default">Finish</button>
+                        <input type="button" value="Back" onclick="location='..'">
+                    </form>
+                {% else %}
+                    <br/>
+                    <input type="button" value="New sprint" onclick="location='add'">
+                    <input type="button" value="Back" onclick="location='..'">
+                {% endif %}
+        </div>
+
+    {% else %}
+        <div class="page-header">
+            <h1>BackTrack</h1>
+            <h2>Error: Not Logged in</h2>
+        </div>
+        <div style="text-align:center; margin:0 auto; padding: 20px 20px 20px 40px;">
+            <p>Please login first. <a href="{% url 'login'%}?next={{request.path}}">Click here.</a> </p>
+        </div>
+    {% endif %}
+
+</body>
+</html>
