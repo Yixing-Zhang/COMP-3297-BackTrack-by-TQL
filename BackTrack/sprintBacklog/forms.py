@@ -6,3 +6,15 @@ class SprintForm(forms.ModelForm):
     class Meta:
         model = SprintBacklog
         fields = ('sprintNumber', 'capacity', 'ddl')
+
+
+class TaskAddForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ('name', 'description', 'estimated',)
+
+
+class TaskModifyForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ('name', 'description', 'status', 'estimated',)

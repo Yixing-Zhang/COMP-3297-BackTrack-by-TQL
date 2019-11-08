@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/productBacklog.css' %}">
+    <meta charset="UTF-8">
+    <title>PBI: {{ pbi.name }}   Task Add</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <div class="page-header">
+            <h1><a href="../..">BackTrack</a></h1>
+            <h2><a href="../..">Project: {{ project.name }}</a>&#160;&#160;&#160;PBI: {{pbi.name}}   Task Add</h2>
+        </div>
+
+        <div class="menu">
+            <ul>
+                <li><a href="/project">My project</a></li>
+                <li><a href="../..">{{ project.name }}</a></li>
+                <li><a href="..">Product Backlog</a></li>
+                <li><a href="../../sprintBacklog">Sprint Backlog</a></li>
+                <li><a href="">PBI</a></li>
+                <li><a class="active" href="">Task</a></li>
+                <li><a href="/accounts/profile">User: {{ user.get_username }}</a></li>
+                <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+            </ul>
+        </div>
+
+        <div class="main">
+            <div style="text-align:center; margin:0 auto;">
+                <br/>
+                <form method="POST" class="post-form">{% csrf_token %}
+                    <table style="margin:0 auto;">
+                        <tr>
+                            <td>{{ form.name.label_tag }}</td>
+                            <td>{{ form.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.description.label_tag }}</td>
+                            <td>{{ form.description }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.estimated.label_tag }}</td>
+                            <td>{{ form.estimated }}</td>
+                        </tr>
+                    </table>
+                    <button type="submit" class="save btn btn-default">Add</button>
+                    <input type="button" value="Back" onclick="location='../../..'">
+                </form>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="page-header">
+            <h1>BackTrack</h1>
+            <h2>Error: Not Logged in</h2>
+        </div>
+        <div style="text-align:center; margin:0 auto; padding: 20px 20px 20px 40px;">
+            <p>Please login first. <a href="{% url 'login'%}">Click here.</a> </p>
+        </div>
+    {% endif %}
+
+</body>
+</html>

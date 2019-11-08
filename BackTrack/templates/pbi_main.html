@@ -34,6 +34,10 @@
             <div class="table" style="text-align:center; margin:0 auto;">
                 <table border="0" style="margin:0 auto;">
                     <tr>
+                        <td><b>Name:</b></td>
+                        <td>{{ pbi.name }}</td>
+                    </tr>
+                    <tr>
                         <td><b>Description:</b></td>
                         <td>{{ pbi.description }}</td>
                     </tr>
@@ -59,9 +63,9 @@
             <div style="text-align:center;">
                 <form>
                     <input type="button" value="Add PBI" onclick="location='add'">
-                    <input type="button" value="Modify" onclick="location='{{ modify }}'">
-                    <input type="button" value="Delete" onclick="location='{{ delete }}'">
-                    <input type="button" value="Back" onclick="location='{{ back }}'">
+                    <input type="button" value="Modify" onclick="location='{{ pbi.pk }}/modify'">
+                    <input type="button" value="Delete" onclick="location='{{ pbi.pk }}/delete'">
+                    <input type="button" value="Back" onclick="location='..'">
                 </form>
             </div>
         </div>

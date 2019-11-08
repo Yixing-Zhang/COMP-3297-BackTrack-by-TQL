@@ -9,6 +9,23 @@ from .forms import *
 
 
 # Create your views here.
+def task_finish(request, project_pk, pbi_pk, task_pk):
+    task = Task.objects.get(pk=task_pk)
+    task.status = 'Finished'
+    task.save()
+    return HttpResponseRedirect(
+        '/project/' + str(project_pk) + '/sprintBacklog/pbi/' + str(pbi_pk) + '/task/' + str(task_pk))
+
+
+def task_owner(request, project_pk, pbi_pk, task_pk):
+    task = Task.objects.get(pk=task_pk)
+    owner = request.user
+    task.owner = owner
+    task.save()
+    return HttpResponseRedirect(
+        '/project/' + str(project_pk) + '/sprintBacklog/pbi/' + str(pbi_pk) + '/task/' + str(task_pk))
+
+
 def active(request, project_pk, sprint_pk):
     project = Project.objects.get(pk=project_pk)
     sprintBacklog = SprintBacklog.objects.get(pk=sprint_pk)
@@ -54,6 +71,21 @@ def finish(request, project_pk):
     return HttpResponseRedirect('/project/' + str(project_pk) + '/sprintBacklog')
 
 
+def task_modify(request, project_pk, pbi_pk, task_pk):
+    task = get_object_or_404(Task, pk=task_pk)
+    pbi = PBI.objects.get(pk=pbi_pk)
+    project = Project.objects.get(pk=project_pk)
+    if request.method == "POST":
+        form = TaskModifyForm(request.POST, instance=task)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.save()
+            return redirect('/project/' + str(project_pk) + '/sprintBacklog/pbi/' + str(pbi_pk) + '/task/' + str(task_pk), pk=pbi.pk)
+    else:
+        form = TaskModifyForm(instance=task)
+    return render(request, 'task_modify.html', {'form': form, 'project': project, 'pbi': pbi, 'task': task})
+
+
 class SprintBacklogMain(TemplateView):
     template_name = "sprintbacklog_main.html"
 
@@ -85,6 +117,17 @@ class SprintBacklogMain(TemplateView):
             context['totalRemainingHours'] = totalRemainingHours
             rows = zip(pbi_list, tasks)
             context['rows'] = rows
+        return context
+
+
+class SprintFinishConfirm(TemplateView):
+    template_name = "sprint_finish_confirm.html"
+
+    def get_context_data(self, **kwargs):
+        project = self.kwargs['project_pk']
+
+        context = super().get_context_data(**kwargs)
+        context["project"] = Project.objects.get(pk=project)
         return context
 
 
@@ -145,4 +188,109 @@ class SprintBacklogAdd(FormView):
         context = super().get_context_data(**kwargs)
         context['project'] = Project.objects.get(pk=project)
         context['form'] = SprintForm()
+        return context
+
+
+class TaskMain(TemplateView):
+    template_name = "task_main.html"
+
+    def get_context_data(self, **kwargs):
+        project_pk = self.kwargs['project_pk']
+        pbi_pk = self.kwargs['pbi_pk']
+        task_pk = self.kwargs['task_pk']
+        project = Project.objects.get(pk=project_pk)
+        pbi = PBI.objects.get(pk=pbi_pk)
+        task = Task.objects.get(pk=task_pk)
+
+        context = super().get_context_data(**kwargs)
+        context['project'] = project
+        context['pbi'] = pbi
+        context['task'] = task
+        return context
+
+
+class TaskOwnerConfirm(TemplateView):
+    template_name = "task_owner_confirm.html"
+
+    def get_context_data(self, **kwargs):
+        project_pk = self.kwargs['project_pk']
+        pbi_pk = self.kwargs['pbi_pk']
+        task_pk = self.kwargs['task_pk']
+        project = Project.objects.get(pk=project_pk)
+        pbi = PBI.objects.get(pk=pbi_pk)
+        task = Task.objects.get(pk=task_pk)
+
+        context = super().get_context_data(**kwargs)
+        context['project'] = project
+        context['pbi'] = pbi
+        context['task'] = task
+        return context
+
+
+class TaskFinishConfirm(TemplateView):
+    template_name = "task_finish_confirm.html"
+
+    def get_context_data(self, **kwargs):
+        project_pk = self.kwargs['project_pk']
+        pbi_pk = self.kwargs['pbi_pk']
+        task_pk = self.kwargs['task_pk']
+        project = Project.objects.get(pk=project_pk)
+        pbi = PBI.objects.get(pk=pbi_pk)
+        task = Task.objects.get(pk=task_pk)
+
+        context = super().get_context_data(**kwargs)
+        context['project'] = project
+        context['pbi'] = pbi
+        context['task'] = task
+        return context
+
+
+class TaskAdd(FormView):
+    template_name = "task_add.html"
+    form_class = TaskAddForm
+
+    def post(self, request, *args, **kwargs):
+        project_pk = self.kwargs['project_pk']
+        form = self.form_class(request.POST)
+        pbi_pk = self.kwargs['pbi_pk']
+        pbi = PBI.objects.get(pk=pbi_pk)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.status = "In process"
+            task.pbi = pbi
+            task.save()
+            return HttpResponseRedirect('/project/' + str(project_pk) + '/sprintBacklog')
+
+        return render(request, self.template_name, {'form': form})
+
+    def get_context_data(self, **kwargs):
+        project_pk = self.kwargs['project_pk']
+        project = Project.objects.get(pk=project_pk)
+        pbi_pk = self.kwargs['pbi_pk']
+        pbi = PBI.objects.get(pk=pbi_pk)
+
+        context = super().get_context_data(**kwargs)
+        context['project'] = project
+        context['pbi'] = pbi
+        context['form'] = TaskAddForm()
+        return context
+
+
+class TaskDelete(DeleteView):
+    model = Task
+    template_name = "task_delete.html"
+
+    def get_success_url(self):
+        project = self.kwargs['project_pk']
+        return reverse_lazy("sprint_backlog_main", kwargs={'project_pk': project})
+
+    def get_context_data(self, **kwargs):
+        pbi_pk = self.kwargs['pbi_pk']
+        project_pk = self.kwargs['project_pk']
+        task_pk = self.kwargs['pk']
+
+        context = super().get_context_data(**kwargs)
+        context['task'] = Task.objects.get(pk=task_pk)
+        context['pbi'] = PBI.objects.get(pk=pbi_pk)
+        context['project'] = Project.objects.get(pk=project_pk)
         return context

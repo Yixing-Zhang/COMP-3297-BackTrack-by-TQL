@@ -85,8 +85,8 @@
                         </tr>
                     </table>
                     <br/>
-                    <form method="POST" action="{% url 'finish' project_pk=project.pk %}">{% csrf_token %}
-                        <button type="submit" class="button">Finish</button>
+                    <form>
+                        <input type="button" value="Finish" onclick="location='/project/{{ project.pk }}/sprintBacklog/finish/confirm'">
                         <input type="button" value="Back" onclick="location='..'">
                     </form>
                 {% else %}
