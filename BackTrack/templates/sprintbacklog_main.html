@@ -43,24 +43,29 @@
                     <table width="100%" border="1" style="margin:0 auto;">
                         <tr>
                             <th width="10%">PBI</th>
-                            <th width="70%">Task</th>
-                            <th width="10%">Remaining Estimated Hours</th>
+                            <th width="60%">Task</th>
                             <th width="10%">Total Estimated Hours</th>
+                            <th width="10%">Estimated Hours Done</th>
+                            <th width="10%">Remaining Estimated Hours</th>
                         </tr>
                         {% for pbi, tasks in rows %}
                         <tr>
                             <td width="10%"><a href="pbi/{{ pbi.pk }}">{{ pbi.name }}</a></td>
-                            <td width="70%">
+                            <td width="60%">
                                 {% for task in tasks %}
                                     {% if task.owner %}
                                         {% if task.status == "In process" %}
                                             <a style="color: red;" href="pbi/{{ pbi.pk }}/task/{{ task.pk }}">{{ task.name }}({{ task.owner }}, {{ task.estimated}})</a>&#160;
+                                        {% elif task.status == "Ready" %}
+                                            <a style="color: deepskyblue;" href="pbi/{{ pbi.pk }}/task/{{ task.pk }}">{{ task.name }}({{ task.owner }}, {{ task.estimated}})</a>&#160;
                                         {% else %}
                                             <a href="pbi/{{ pbi.pk }}/task/{{ task.pk }}">{{ task.name }}({{ task.owner }}, {{ task.estimated}})</a>&#160;
                                         {% endif %}
                                     {% else %}
                                         {% if task.status == "In process" %}
                                             <a style="color: red;" href="pbi/{{ pbi.pk }}/task/{{ task.pk }}">{{ task.name }}({{ task.estimated}})</a>&#160;
+                                        {% elif task.status == "Ready" %}
+                                            <a style="color: deepskyblue;" href="pbi/{{ pbi.pk }}/task/{{ task.pk }}">{{ task.name }}({{ task.estimated}})</a>&#160;
                                         {% else %}
                                             <a href="pbi/{{ pbi.pk }}/task/{{ task.pk }}">{{ task.name }}({{ task.estimated}})</a>&#160;
                                         {% endif %}
@@ -68,25 +73,42 @@
                                 {% endfor %}
                                 <a style="color:black;" href="pbi/{{ pbi.pk }}/task/add"><b>Add task</b></a>
                             </td>
-                            <td width="10%">{{pbi.remainingTaskHours}}</td>
                             <td width="10%">{{ pbi.taskHours }}</td>
+                            <td width="10%">{{ pbi.taskHoursDone}}</td>
+                            <td width="10%">{{pbi.remainingTaskHours}}</td>
                         </tr>
                         {% endfor %}
                     </table>
                     <table width="100%" border="1" style="margin:0 auto;">
                         <tr>
                             <th width="10%"><a style="color: black" href="pbi/add">Add PBI</a></th>
-                            <th width="17.5%">DDL</th>
-                            <th style="color: red" width="17.5%">{{ project.activeSprint.ddl }}</th>
-                            <th width="17.5%">Capacity</th>
-                            <th width="17.5%">{{ project.activeSprint.capacity }}</th>
-                            <th width="10%">{{ totalRemainingHours}}</th>
+                            <th width="15%">Status</th>
+                            <th width="15%">{{ project.activeSprint.status }}</th>
+                            <th width="15%">Capacity</th>
+                            <th width="15%">{{ project.activeSprint.capacity }}</th>
                             <th width="10%">{{ totalHours }}</th>
+                            <th width="10%">{{ totalHoursDone}}</th>
+                            <th width="10%">{{ totalRemainingHours}}</th>
+                        </tr>
+                        <tr>
+                            <th width="10%">
+                            <th width="15%">Start Time</th>
+                            <th width="15%">{{ project.activeSprint.time }}</th>
+                            <th width="15%">DDL</th>
+                            <th style="color: red" width="15%">{{ project.activeSprint.ddl }}</th>
+                            <th width="10%">
+                            <th width="10%">
+                            <th width="10%">
+                            </th>
                         </tr>
                     </table>
                     <br/>
                     <form>
-                        <input type="button" value="Finish" onclick="location='/project/{{ project.pk }}/sprintBacklog/finish/confirm'">
+                        {% if project.activeSprint.status == "Ready" %}
+                            <input type="button" value="Start" onclick="location='/project/{{ project.pk }}/sprintBacklog/{{ project.activeSprint.pk }}/start'">
+                        {% else %}
+                            <input type="button" value="Finish" onclick="location='/project/{{ project.pk }}/sprintBacklog/finish/confirm'">
+                        {% endif %}
                         <input type="button" value="Back" onclick="location='..'">
                     </form>
                 {% else %}

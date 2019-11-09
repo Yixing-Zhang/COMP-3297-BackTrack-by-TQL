@@ -14,6 +14,7 @@ class PBI(models.Model):
     STATUS_CHOICES = [
         ('Finished', 'Finished'),
         ('In process', 'In process'),
+        ('Unfinished', 'Unfinished'),
         ('Ready', 'Ready')
     ]
     name = models.CharField(max_length=50)
@@ -22,6 +23,7 @@ class PBI(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Ready')
     taskHours = models.PositiveSmallIntegerField(null=True, blank=True)
     remainingTaskHours = models.PositiveSmallIntegerField(null=True, blank=True)
+    taskHoursDone = models.PositiveSmallIntegerField(null=True, blank=True)
     estimated = models.PositiveSmallIntegerField()
     priority = models.PositiveSmallIntegerField()
     cumulative = models.PositiveIntegerField(null=True, blank=True)

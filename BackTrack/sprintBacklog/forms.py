@@ -5,7 +5,7 @@ from .models import *
 class SprintForm(forms.ModelForm):
     class Meta:
         model = SprintBacklog
-        fields = ('sprintNumber', 'capacity', 'ddl')
+        fields = ('capacity', 'ddl')
 
 
 class TaskAddForm(forms.ModelForm):
@@ -17,4 +17,4 @@ class TaskAddForm(forms.ModelForm):
 class TaskModifyForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ('name', 'description', 'status', 'estimated',)
+        fields = ('name', 'description', 'status', 'estimated', 'effortsDone')

@@ -25,6 +25,7 @@ class Project(models.Model):
     # Creation time(set automatically once created)
     time = models.DateTimeField(auto_now=False, auto_now_add=True)
     activeSprint = models.ForeignKey('sprintBacklog.SprintBacklog', related_name='active_sprint', null=True, blank=True, on_delete=models.SET_NULL)
+    sprintNumber = models.PositiveSmallIntegerField(null=False, blank=False, default=0)
     owner = models.OneToOneField(BackTrackUser, related_name='owner', on_delete=models.CASCADE)
 
     def __str__(self):

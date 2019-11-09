@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from datetime import datetime
 from django.views.generic import TemplateView, FormView, DeleteView, UpdateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -12,6 +13,7 @@ from .forms import *
 def task_finish(request, project_pk, pbi_pk, task_pk):
     task = Task.objects.get(pk=task_pk)
     task.status = 'Finished'
+    task.effortsDone = task.estimated
     task.save()
     return HttpResponseRedirect(
         '/project/' + str(project_pk) + '/sprintBacklog/pbi/' + str(pbi_pk) + '/task/' + str(task_pk))
@@ -21,15 +23,25 @@ def task_owner(request, project_pk, pbi_pk, task_pk):
     task = Task.objects.get(pk=task_pk)
     owner = request.user
     task.owner = owner
+    task.status = 'In process'
     task.save()
     return HttpResponseRedirect(
         '/project/' + str(project_pk) + '/sprintBacklog/pbi/' + str(pbi_pk) + '/task/' + str(task_pk))
+
+
+def start(request, project_pk, sprint_pk):
+    sprintBacklog = SprintBacklog.objects.get(pk=sprint_pk)
+    sprintBacklog.status = "In process"
+    sprintBacklog.time = datetime.now()
+    sprintBacklog.save()
+    return HttpResponseRedirect('/project/' + str(project_pk) + '/sprintBacklog')
 
 
 def active(request, project_pk, sprint_pk):
     project = Project.objects.get(pk=project_pk)
     sprintBacklog = SprintBacklog.objects.get(pk=sprint_pk)
     project.activeSprint = sprintBacklog
+    project.sprintNumber += 1
     project.save()
     return HttpResponseRedirect('/project/' + str(project_pk) + '/sprintBacklog')
 
@@ -61,10 +73,20 @@ def finish(request, project_pk):
         pbi_list = PBI.objects.filter(sprintBacklog__pk=sprintBacklog.pk)
         for pbi in pbi_list:
             pbi.status = 'Finished'
+            ready = True
             task = Task.objects.filter(pbi__pk=pbi.pk)
             for t in task:
-                t.status = 'Finished'
-                t.save()
+                if t.status != "Finished":
+                    if t.status == "In process":
+                        pbi.status = "Unfinished"
+                        ready = False
+                        break
+                    else:
+                        pbi.status = "Unfinished"
+                else:
+                    ready = False
+            if ready:
+                pbi.status = "Ready"
             pbi.save()
     project.activeSprint = None
     project.save()
@@ -99,22 +121,27 @@ class SprintBacklogMain(TemplateView):
             pbi_list = PBI.objects.filter(sprintBacklog__pk=sprintBacklog.pk).order_by('priority')
             tasks = []
             totalHours = 0
+            totalHoursDone = 0
             totalRemainingHours = 0
             for pbi in pbi_list:
                 task = Task.objects.filter(pbi__pk=pbi.pk)
                 hours = 0
                 remainingHours = 0
+                hoursDone = 0
                 for t in task:
-                    if t.status == 'In process':
-                        remainingHours += t.estimated
+                    remainingHours += (t.estimated - t.effortsDone)
                     hours += t.estimated
+                    hoursDone += t.effortsDone
                 pbi.taskHours = hours
                 pbi.remainingTaskHours = remainingHours
+                pbi.taskHoursDone = hoursDone
                 totalHours += hours
                 totalRemainingHours += remainingHours
+                totalHoursDone += hoursDone
                 tasks.append(task)
             context['totalHours'] = totalHours
             context['totalRemainingHours'] = totalRemainingHours
+            context['totalHoursDone'] = totalHoursDone
             rows = zip(pbi_list, tasks)
             context['rows'] = rows
         return context
@@ -159,7 +186,7 @@ class SprintPBIAdd(TemplateView):
         context['pbi_list'] = PBI.objects.filter(productBacklog__pk=productBacklog.pk).order_by('priority')
         cumulative = 0
         for pbi in context['pbi_list']:
-            if pbi.status == 'Ready':
+            if pbi.status == 'Ready' or pbi.status == "Unfinished":
                 cumulative += pbi.estimated
                 pbi.cumulative = cumulative
         return context
@@ -175,7 +202,8 @@ class SprintBacklogAdd(FormView):
         project = Project.objects.get(pk=project_pk)
         if form.is_valid():
             sprintBacklog = form.save(commit=False)
-            sprintBacklog.status = "In process"
+            sprintBacklog.sprintNumber = project.sprintNumber + 1
+            sprintBacklog.status = "Ready"
             sprintBacklog.project = project
             sprintBacklog.save()
             return HttpResponseRedirect('/project/' + str(project_pk) + '/sprintBacklog/' + str(sprintBacklog.pk))
@@ -256,7 +284,7 @@ class TaskAdd(FormView):
         pbi = PBI.objects.get(pk=pbi_pk)
         if form.is_valid():
             task = form.save(commit=False)
-            task.status = "In process"
+            task.status = "Ready"
             task.pbi = pbi
             task.save()
             return HttpResponseRedirect('/project/' + str(project_pk) + '/sprintBacklog')

@@ -9,6 +9,7 @@ urlpatterns = [
     path('pbi/add', views.SprintPBIAdd.as_view(), name='sprint_pbi_add'),
     path('pbi/add/<int:pbi_pk>', views.add, name='add_pbi'),
     path('add', views.SprintBacklogAdd.as_view(), name='add_sprint'),
+    path('<int:sprint_pk>/start', views.start, name='start_sprint'),
     path('<int:sprint_pk>', views.active, name='active'),
     path('pbi/<int:pbi_pk>/task/<int:task_pk>', views.TaskMain.as_view(), name='task_main'),
     path('pbi/<int:pbi_pk>/task/<int:task_pk>/owner', views.task_owner, name='task_owner'),
