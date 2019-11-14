@@ -28,5 +28,8 @@ class Project(models.Model):
     sprintNumber = models.PositiveSmallIntegerField(null=False, blank=False, default=0)
     owner = models.OneToOneField(BackTrackUser, related_name='owner', on_delete=models.CASCADE)
 
+    def get_developers(self):
+        return BackTrackUser.objects.filter(project__pk=self.pk)
+
     def __str__(self):
         return self.name

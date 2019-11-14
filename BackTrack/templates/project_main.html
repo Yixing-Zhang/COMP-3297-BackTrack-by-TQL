@@ -1,10 +1,75 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/productBacklog.css' %}">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Projects: {{ user.username }}</title>
 </head>
 <body>
+    {% if user.is_authenticated %}
+        <div class="page-header">
+            <h1>BackTrack</h1>
+            <h2>My projects</h2>
+        </div>
+
+        <div class="menu">
+            <ul>
+                <li><a class='active' href="">My project</a></li>
+                <li><a href="../../../accounts/profile">User: {{ user.get_username }}</a></li>
+                <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
+            </ul>
+        </div>
+
+        {% if project_list %}
+            <div class="main">
+                <div class="table" style="text-align:center; margin:0 auto;">
+                    <table border="1" style="margin:0 auto;">
+                        <tr>
+                            <th width="10%"><b>Project Name</b></th>
+                            <th width="10%"><b>Description</b></th>
+                            <th width="10%"><b>Sprint Number</b></th>
+                            <th width="10%"><b>Active Sprint</b></th>
+                            <th width="10%"><b>Owner</b></th>
+                            <th width="10%"><b>Manager</b></th>
+                            <th width="10%"><b>Developer</b></th>
+                            <th width="10%"><b>Creation Time</b></th>
+                        </tr>
+                        {% for project in project_list %}
+                            <tr>
+                                <td><a href="{{ project.pk }}">{{ project.name }}</a></td>
+                                <td>{{ project.description }}</td>
+                                <td>{{ project.sprintNumber }}</td>
+                                <td>{{ project.activeSprint }}</td>
+                                <td>{{ project.owner }}</td>
+                                <td>{{ project.manager }}</td>
+                                <td>
+                                    {% for developer in project.get_developers %}
+                                        {{ developer.username }}&#160;
+                                    {% endfor %}
+                                </td>
+                                <td>{{ project.time }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% else %}
+        {% endif %}
+
+    {% else %}
+        <div class="page-header">
+            <h1>BackTrack</h1>
+            <h2>Error: Not Logged in</h2>
+        </div>
+        <div style="text-align:center; margin:0 auto; padding: 20px 20px 20px 40px;">
+            <p>Please login first. <a href="{% url 'login'%}">Click here.</a> </p>
+        </div>
+    {% endif %}
 
 </body>
 </html>
