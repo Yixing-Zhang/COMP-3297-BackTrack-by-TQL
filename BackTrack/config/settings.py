@@ -125,6 +125,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-LOGIN_REDIRECT_URL = '/project/1/productBacklog'
+LOGIN_REDIRECT_URL = '/project'
 
 AUTH_USER_MODEL = 'project.BackTrackUser'

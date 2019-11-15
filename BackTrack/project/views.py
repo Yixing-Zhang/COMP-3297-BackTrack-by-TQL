@@ -14,23 +14,29 @@ class ProjectMain(TemplateView):
     def get_context_data(self, **kwargs):
         request = self.request
         user = request.user
-        if request.user.is_authenticated:
-            if request.user.is_superuser:
+        if user.is_authenticated:
+            if user.is_superuser:
+                group = 'Super User'
                 project_list = Project.objects.all()
-            elif request.user.groups.filter(name='Owner').exists():
+            elif user.groups.filter(name='Owners').count():
+                group = 'Owner'
                 project_list = Project.objects.filter(owner__pk=user.pk)
-            elif request.user.groups.filter(name='Manager').exists():
+            elif user.groups.filter(name='Managers').count():
+                group = 'Manager'
                 project_list = Project.objects.filter(manager__pk=user.pk)
             else:
+                group = 'Developer'
                 if user.project is not None:
                     project_list = [user.project]
                 else:
                     project_list = None
         else:
             project_list = None
+            group = None
 
         context = super().get_context_data(**kwargs)
         context['project_list'] = project_list
+        context['group'] = group
         return context
 
 
