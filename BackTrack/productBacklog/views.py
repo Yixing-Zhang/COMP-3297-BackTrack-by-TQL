@@ -14,10 +14,24 @@ class ProductBacklogMain(TemplateView):
     def get_context_data(self, **kwargs):
         project = self.kwargs['project_pk']
         productBacklog = ProductBacklog.objects.get(project__pk=project)
+        request = self.request
+        user = request.user
+        if user.is_authenticated:
+            if user.is_superuser:
+                group = 'Super User'
+            elif user.groups.filter(name='Owners').count():
+                group = 'Owner'
+            elif user.groups.filter(name='Managers').count():
+                group = 'Manager'
+            else:
+                group = 'Developer'
+        else:
+            group = None
 
         context = super().get_context_data(**kwargs)
         context['project'] = Project.objects.get(pk=project)
         context['pbi_list'] = PBI.objects.filter(productBacklog__pk=productBacklog.pk).order_by('priority')
+        context['group'] = group
         remaining_estimated = 0
         finished_estimated = 0
         for pbi in context['pbi_list']:
@@ -40,10 +54,24 @@ class PBIMain(TemplateView):
     def get_context_data(self, **kwargs):
         project = self.kwargs['project_pk']
         pbi = self.kwargs['pbi_pk']
+        request = self.request
+        user = request.user
+        if user.is_authenticated:
+            if user.is_superuser:
+                group = 'Super User'
+            elif user.groups.filter(name='Owners').count():
+                group = 'Owner'
+            elif user.groups.filter(name='Managers').count():
+                group = 'Manager'
+            else:
+                group = 'Developer'
+        else:
+            group = None
 
         context = super().get_context_data(**kwargs)
         context["project"] = Project.objects.get(pk=project)
         context['pbi'] = PBI.objects.get(pk=pbi)
+        context['group'] = group
         return context
 
 

@@ -62,7 +62,9 @@
 
             <div style="text-align:center;">
                 <form method="POST" action="{% url 'remove' project_pk=project.pk pbi_pk=pbi.pk %}">{% csrf_token %}
-                    <button type="submit" class="button">Remove PBI</button>
+                    {% if group == 'Developer' or group == 'Super User' %}
+                        <button type="submit" class="button">Remove PBI</button>
+                    {% endif %}
                     <input type="button" value="Back" onclick="location='/project/{{ project.pk }}/sprintBacklog'">
                 </form>
             </div>

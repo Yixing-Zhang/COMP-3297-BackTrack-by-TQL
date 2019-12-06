@@ -23,7 +23,6 @@
                 <li><a href="/project/{{ project.pk }}">{{ project.name }}</a></li>
                 <li><a href="../productBacklog">Product Backlog</a></li>
                 <li><a class="active" href="">Sprint Backlog</a></li>
-                <li><a href="pbi/add">PBI</a></li>
                 <li><a href="../../../accounts/profile">User: {{ user.get_username }}</a></li>
                 <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
             </ul>
@@ -71,7 +70,9 @@
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
-                                <a style="color:black;" href="pbi/{{ pbi.pk }}/task/add"><b>Add task</b></a>
+                                {% if group == 'Developer' or group == 'Super User' %}
+                                    <a style="color:black;" href="pbi/{{ pbi.pk }}/task/add"><b>Add task</b></a>
+                                {% endif %}
                             </td>
                             <td width="10%">{{ pbi.taskHours }}</td>
                             <td width="10%">{{ pbi.taskHoursDone}}</td>
@@ -81,7 +82,11 @@
                     </table>
                     <table width="100%" border="1" style="margin:0 auto;">
                         <tr>
-                            <th width="10%"><a style="color: black" href="pbi/add">Add PBI</a></th>
+                            {% if group == 'Developer' or group == 'Super User' %}
+                                <th width="10%"><a style="color: black" href="pbi/add">Add PBI</a></th>
+                            {% else %}
+                                <th width="10%"></th>
+                            {% endif %}
                             <th width="15%">Status</th>
                             <th width="15%">{{ project.activeSprint.status }}</th>
                             <th width="15%">Capacity</th>
@@ -105,16 +110,22 @@
                     <br/>
                     <form>
                         {% if project.activeSprint.status == "Ready" %}
-                            <input type="button" value="Start" onclick="location='/project/{{ project.pk }}/sprintBacklog/{{ project.activeSprint.pk }}/start'">
+                            {% if group == 'Developer' or group == 'Super User' %}
+                                <input type="button" value="Start" onclick="location='/project/{{ project.pk }}/sprintBacklog/{{ project.activeSprint.pk }}/start'">
+                            {% endif %}
                         {% else %}
-                            <input type="button" value="Finish" onclick="location='/project/{{ project.pk }}/sprintBacklog/finish/confirm'">
+                            {% if group == 'Developer' or group == 'Super User' %}
+                                <input type="button" value="Finish" onclick="location='/project/{{ project.pk }}/sprintBacklog/finish/confirm'">
+                            {% endif %}
                         {% endif %}
                         <input type="button" value="Back" onclick="location='..'">
                     </form>
                 {% else %}
                     <br/>
-                    <input type="button" value="New sprint" onclick="location='add'">
-                    <input type="button" value="Back" onclick="location='..'">
+                    {% if group == 'Developer' or group == 'Super User' %}
+                        <input type="button" value="New sprint" onclick="location='add'">
+                    {% endif %}
+                    <input type="button" value="Back" onclick="location='/project/{{ project.pk }}'">
                 {% endif %}
             </div>
         </div>

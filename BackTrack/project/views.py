@@ -46,7 +46,21 @@ class ProjectDetail(TemplateView):
     def get_context_data(self, **kwargs):
         project_pk = self.kwargs['project_pk']
         project = Project.objects.get(pk=project_pk)
+        request = self.request
+        user = request.user
+        if user.is_authenticated:
+            if user.is_superuser:
+                group = 'Super User'
+            elif user.groups.filter(name='Owners').count():
+                group = 'Owner'
+            elif user.groups.filter(name='Managers').count():
+                group = 'Manager'
+            else:
+                group = 'Developer'
+        else:
+            group = None
 
         context = super().get_context_data(**kwargs)
         context['project'] = project
+        context['group'] = group
         return context

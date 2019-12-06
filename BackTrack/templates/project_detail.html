@@ -21,8 +21,8 @@
             <ul>
                 <li><a href="/project">My project</a></li>
                 <li><a class="active" href="">{{ project.name }}</a></li>
-                <li><a href="{{ project.pk }}/productBacklog">Product Backlog</a></li>
-                <li><a href="{{ project.pk }}/sprintBacklog">Sprint Backlog</a></li>
+                <li><a href="productBacklog">Product Backlog</a></li>
+                <li><a href="sprintBacklog">Sprint Backlog</a></li>
                 <li><a href="/accounts/profile">User: {{ user.get_username }}</a></li>
                 <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
             </ul>
@@ -45,7 +45,7 @@
                         <th width="10%"><b>Creation Time</b></th>
                     </tr>
                     <tr>
-                        <td><a href="{{ project.pk }}">{{ project.name }}</a></td>
+                        <td>{{ project.name }}</td>
                         <td>{{ project.description }}</td>
                         <td>{{ project.sprintNumber }}</td>
                         <td>{{ project.activeSprint }}</td>
@@ -62,8 +62,12 @@
             </div>
             <br/>
             <div style="text-align:center;">
-                <input type="button" value="Product Backlog" onclick="location='{{ project.pk }}/productBacklog'">
-                <input type="button" value="Sprint Backlog" onclick="location='{{ project.pk }}/sprintBacklog'">
+                <input type="button" value="Product Backlog" onclick="location='productBacklog'">
+                <input type="button" value="Sprint Backlog" onclick="location='sprintBacklog'">
+                {% if group == 'Owner' or group == 'Super User' %}
+                    <input type="button" value="Finish" onclick="location='finish'">
+                {% endif %}
+                <input type="button" value="Back" onclick="location='/project'">
             </div>
         </div>
 

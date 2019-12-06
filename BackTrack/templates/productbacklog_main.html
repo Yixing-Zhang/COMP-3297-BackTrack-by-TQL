@@ -23,7 +23,6 @@
                 <li><a href="/project/{{ project.pk }}">{{ project.name }}</a></li>
                 <li><a class="active" href="">Product Backlog</a></li>
                 <li><a href="../sprintBacklog">Sprint Backlog</a></li>
-                <li><a href="pbi/add">PBI</a></li>
                 <li><a href="../../../accounts/profile">User: {{ user.get_username }}</a></li>
                 <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
             </ul>
@@ -110,8 +109,10 @@
             <br/>
             <div class="button" style="text-align:center;">
                 <form method="POST" class="post-form">{% csrf_token %}
-                    <input type="button" value="Add PBI" onclick="location='pbi/add'">
-                    <input type="button" value="Back" onclick="location='..'">
+                    {% if group == 'Owner' or group == 'Super User' %}
+                        <input type="button" value="Add PBI" onclick="location='pbi/add'">
+                    {% endif %}
+                    <input type="button" value="Back" onclick="location='/project/{{ project.pk }}'">
                 </form>
             </div>
         </div>

@@ -27,7 +27,7 @@
 
         <div class="main">
             <div style="text-align:center;">
-                    <p style="font-family: 'Lobster', cursive; font-size: 15pt;">Welcome! {{ group }} {{ user.username }}</p>
+                    <p style="font-family: 'Lobster', cursive; font-size: 15pt;">Welcome! {{ group }} {{ user.username }}!</p>
             </div>
             {% if project_list %}
                 <div class="table" style="text-align:center; margin:0 auto;">
@@ -63,10 +63,10 @@
             {% else %}
                 <div style="text-align:center;">
                     <p style="font-size: 25pt;">You are not involved in any project.</p>
+                    {% if group == 'Developer' or group == 'Super User' %}
+                        <input type="button" value="New Project" onclick="location='add'">
+                    {% endif %}
                 </div>
-                {% if group == 'Developer' %}
-                    <input type="button" value="New Project" onclick="location='add'">
-                {% endif %}
             {% endif %}
         </div>
 

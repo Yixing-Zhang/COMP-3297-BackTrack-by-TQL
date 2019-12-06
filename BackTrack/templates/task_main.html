@@ -67,10 +67,12 @@
 
             <div style="text-align:center;">
                 <form>
-                    <input type="button" value="Take ownership" onclick="location='{{ task.pk }}/owner/confirm'">
-                    <input type="button" value="Finish" onclick="location='{{ task.pk }}/finish/confirm'">
-                    <input type="button" value="Modify" onclick="location='{{ task.pk }}/modify'">
-                    <input type="button" value="Delete" onclick="location='{{ task.pk }}/delete'">
+                    {% if group == 'Developer' or group == 'Super User' %}
+                        <input type="button" value="Take ownership" onclick="location='{{ task.pk }}/owner/confirm'">
+                        <input type="button" value="Finish" onclick="location='{{ task.pk }}/finish/confirm'">
+                        <input type="button" value="Modify" onclick="location='{{ task.pk }}/modify'">
+                        <input type="button" value="Delete" onclick="location='{{ task.pk }}/delete'">
+                    {% endif %}
                     <input type="button" value="Back" onclick="location='/project/{{ project.pk }}/sprintBacklog'">
                 </form>
             </div>

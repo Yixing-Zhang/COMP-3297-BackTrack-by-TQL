@@ -62,9 +62,10 @@
 
             <div style="text-align:center;">
                 <form>
-                    <input type="button" value="Add PBI" onclick="location='add'">
-                    <input type="button" value="Modify" onclick="location='{{ pbi.pk }}/modify'">
-                    <input type="button" value="Delete" onclick="location='{{ pbi.pk }}/delete'">
+                    {% if group == 'Owner' or group == 'Super User' %}
+                        <input type="button" value="Modify" onclick="location='{{ pbi.pk }}/modify'">
+                        <input type="button" value="Delete" onclick="location='{{ pbi.pk }}/delete'">
+                    {% endif %}
                     <input type="button" value="Back" onclick="location='..'">
                 </form>
             </div>

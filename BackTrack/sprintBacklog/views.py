@@ -114,6 +114,19 @@ class SprintBacklogMain(TemplateView):
     def get_context_data(self, **kwargs):
         project = self.kwargs['project_pk']
         sprintBacklog = Project.objects.get(pk=project).activeSprint
+        request = self.request
+        user = request.user
+        if user.is_authenticated:
+            if user.is_superuser:
+                group = 'Super User'
+            elif user.groups.filter(name='Owners').count():
+                group = 'Owner'
+            elif user.groups.filter(name='Managers').count():
+                group = 'Manager'
+            else:
+                group = 'Developer'
+        else:
+            group = None
 
         context = super().get_context_data(**kwargs)
         context['project'] = Project.objects.get(pk=project)
@@ -144,6 +157,7 @@ class SprintBacklogMain(TemplateView):
             context['totalHoursDone'] = totalHoursDone
             rows = zip(pbi_list, tasks)
             context['rows'] = rows
+            context['group'] = group
         return context
 
 
@@ -164,6 +178,19 @@ class SprintPBIMain(TemplateView):
     def get_context_data(self, **kwargs):
         project = self.kwargs['project_pk']
         pbi = self.kwargs['pbi_pk']
+        request = self.request
+        user = request.user
+        if user.is_authenticated:
+            if user.is_superuser:
+                group = 'Super User'
+            elif user.groups.filter(name='Owners').count():
+                group = 'Owner'
+            elif user.groups.filter(name='Managers').count():
+                group = 'Manager'
+            else:
+                group = 'Developer'
+        else:
+            group = None
 
         context = super().get_context_data(**kwargs)
         context['delete'] = str(pbi) + '/delete'
@@ -171,6 +198,7 @@ class SprintPBIMain(TemplateView):
         context['back'] = '/project/' + str(project) + '/productBacklog'
         context["project"] = Project.objects.get(pk=project)
         context['pbi'] = PBI.objects.get(pk=pbi)
+        context['group'] = group
         return context
 
 
@@ -229,11 +257,25 @@ class TaskMain(TemplateView):
         project = Project.objects.get(pk=project_pk)
         pbi = PBI.objects.get(pk=pbi_pk)
         task = Task.objects.get(pk=task_pk)
+        request = self.request
+        user = request.user
+        if user.is_authenticated:
+            if user.is_superuser:
+                group = 'Super User'
+            elif user.groups.filter(name='Owners').count():
+                group = 'Owner'
+            elif user.groups.filter(name='Managers').count():
+                group = 'Manager'
+            else:
+                group = 'Developer'
+        else:
+            group = None
 
         context = super().get_context_data(**kwargs)
         context['project'] = project
         context['pbi'] = pbi
         context['task'] = task
+        context['group'] = group
         return context
 
 
