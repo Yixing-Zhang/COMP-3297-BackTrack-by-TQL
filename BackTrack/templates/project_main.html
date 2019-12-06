@@ -49,11 +49,18 @@
                                 <td>{{ project.sprintNumber }}</td>
                                 <td>{{ project.activeSprint }}</td>
                                 <td>{{ project.owner }}</td>
-                                <td>{{ project.manager }}</td>
+                                <td>
+                                    {% if project.manager %}
+                                        {{ project.manager }}
+                                    {% else %}
+                                    <a href="/project/{{ project.pk }}/manager/invite">Invite</a>
+                                    {% endif %}
+                                </td>
                                 <td>
                                     {% for developer in project.get_developers %}
                                         {{ developer.username }}&#160;
                                     {% endfor %}
+                                    <a href="/project/{{ project.pk }}/developer/invite">Invite</a>
                                 </td>
                                 <td>{{ project.time }}</td>
                             </tr>
@@ -64,7 +71,7 @@
                 <div style="text-align:center;">
                     <p style="font-size: 25pt;">You are not involved in any project.</p>
                     {% if group == 'Developer' or group == 'Super User' %}
-                        <input type="button" value="New Project" onclick="location='add'">
+                        <input type="button" value="New Project" onclick="location='create'">
                     {% endif %}
                 </div>
             {% endif %}

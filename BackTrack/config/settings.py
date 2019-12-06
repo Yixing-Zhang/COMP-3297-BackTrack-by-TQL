@@ -128,3 +128,10 @@ STATICFILES_DIRS = [
 LOGIN_REDIRECT_URL = '/project'
 
 AUTH_USER_MODEL = 'project.BackTrackUser'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'hku_tql@163.com'
+EMAIL_HOST_PASSWORD = 'hku123'
+EMAIL_FROM = 'BackTrack<hku_tql@163.com>'

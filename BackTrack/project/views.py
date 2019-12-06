@@ -1,8 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.core.mail import send_mail
+from django.conf import settings
 from datetime import datetime
 from django.views.generic import TemplateView, FormView, DeleteView, UpdateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.contrib.auth.models import Group
 from .models import *
 from .forms import *
 
@@ -70,6 +73,12 @@ class ProjectFinish(DeleteView):
     template_name = "project_finish.html"
 
     def get_success_url(self):
+        request = self.request
+        user = request.user
+        owner_group = Group.objects.get(name='Owners')
+        owner_group.user_set.remove(user)
+        developer_group = Group.objects.get(name='Developers')
+        developer_group.user_set.add(user)
         return '/project'
 
     def get_context_data(self, **kwargs):
@@ -77,4 +86,29 @@ class ProjectFinish(DeleteView):
 
         context = super().get_context_data(**kwargs)
         context['project'] = Project.objects.get(pk=project_pk)
+        return context
+
+class ProjectCreate(FormView):
+    template_name = "project_creation.html"
+    form_class = ProjectCreateForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            project = form.save(commit=False)
+            user = request.user
+            project.owner = user
+            project.save()
+            owner_group = Group.objects.get(name='Owners')
+            owner_group.user_set.add(user)
+            developer_group = Group.objects.get(name='Developers')
+            developer_group.user_set.remove(user)
+            return HttpResponseRedirect('/project')
+
+        return render(request, self.template_name, {'form': form})
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        context['form'] = ProjectCreateForm()
         return context
