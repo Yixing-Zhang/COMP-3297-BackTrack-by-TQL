@@ -64,3 +64,17 @@ class ProjectDetail(TemplateView):
         context['project'] = project
         context['group'] = group
         return context
+
+class ProjectFinish(DeleteView):
+    model = Project
+    template_name = "project_finish.html"
+
+    def get_success_url(self):
+        return '/project'
+
+    def get_context_data(self, **kwargs):
+        project_pk = self.kwargs['pk']
+
+        context = super().get_context_data(**kwargs)
+        context['project'] = Project.objects.get(pk=project_pk)
+        return context
