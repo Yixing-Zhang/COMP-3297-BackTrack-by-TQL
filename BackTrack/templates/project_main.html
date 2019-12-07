@@ -53,14 +53,18 @@
                                     {% if project.manager %}
                                         {{ project.manager }}
                                     {% else %}
-                                    <a href="/project/{{ project.pk }}/manager/invite">Invite</a>
+                                        {% if group == 'Owner' or group == 'Super User' %}
+                                            <a href="/project/{{ project.pk }}/manager/invite">Invite</a>
+                                        {% endif %}
                                     {% endif %}
                                 </td>
                                 <td>
                                     {% for developer in project.get_developers %}
                                         {{ developer.username }}&#160;
                                     {% endfor %}
-                                    <a href="/project/{{ project.pk }}/developer/invite">Invite</a>
+                                    {% if group == 'Owner' or group == 'Super User' %}
+                                        <a href="/project/{{ project.pk }}/developer/invite">Invite</a>
+                                    {% endif %}
                                 </td>
                                 <td>{{ project.time }}</td>
                             </tr>

@@ -135,3 +135,4 @@ EMAIL_PORT = 25
 EMAIL_HOST_USER = 'hku_tql@163.com'
 EMAIL_HOST_PASSWORD = 'hku123'
 EMAIL_FROM = 'BackTrack<hku_tql@163.com>'
+EMAIL_USE_TLS = True

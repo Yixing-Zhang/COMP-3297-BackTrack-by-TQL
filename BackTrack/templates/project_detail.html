@@ -50,11 +50,22 @@
                         <td>{{ project.sprintNumber }}</td>
                         <td>{{ project.activeSprint }}</td>
                         <td>{{ project.owner }}</td>
-                        <td>{{ project.manager }}</td>
+                        <td>
+                            {% if project.manager %}
+                                {{ project.manager }}
+                            {% else %}
+                                {% if group == 'Owner' or group == 'Super User' %}
+                                    <a href="/project/{{ project.pk }}/manager/invite">Invite</a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
                         <td>
                             {% for developer in project.get_developers %}
                                 {{ developer.username }}&#160;
                             {% endfor %}
+                            {% if group == 'Owner' or group == 'Super User' %}
+                                <a href="/project/{{ project.pk }}/developer/invite">Invite</a>
+                            {% endif %}
                         </td>
                         <td>{{ project.time }}</td>
                     </tr>
